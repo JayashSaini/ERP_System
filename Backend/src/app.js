@@ -3,24 +3,45 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const { ApiError } = require('./utils/ApiError.js');
+const { errorHandler } = require('./middlewares/error.middlewares.js');
+const morganMiddleware = require('./logger/morgan.logger.js');
 
 const app = express();
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN || '*',
-    credentials: true,
-  })
-);
 
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+const startApp = () => {
+  // import routes
+  const userRouter = require('./routes/auth/user.routes.js');
 
-app.use(cookieParser());
+  app.use(
+    cors({
+      origin: process.env.CORS_ORIGIN || '*',
+      credentials: true,
+    })
+  );
 
-// Set security headers with Helmet middleware
-app.use(helmet());
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+  app.use(cookieParser());
 
-// Log requests with Morgan middleware (use 'combined' format for production)
-app.use(morgan('dev'));
+  // Set security headers with Helmet middleware
+  app.use(helmet());
 
-module.exports = { app };
+  // Log requests with Morgan middleware (use 'combined' format for production)
+  app.use(morgan('dev'));
+  app.use(morganMiddleware);
+
+  // routes
+  app.use('/api/v1/users', userRouter);
+
+  // if endpoint not found
+  app.use((_, __, next) => {
+    const error = new ApiError(404, 'endpoint not found');
+    next(error);
+  });
+
+  // Error handler
+  app.use(errorHandler);
+};
+
+module.exports = { app, startApp };
