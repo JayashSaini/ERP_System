@@ -1,0 +1,27 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/auth/login", "destination": "/index.html" },
+    { "source": "/auth/register", "destination": "/index.html" },
+    { "source": "/auth/forgot-password", "destination": "/index.html" },
+    { "source": "/auth/reset-password/:token", "destination": "/index.html" },
+    { "source": "/auth/email-verification", "destination": "/index.html" },
+    {
+      "source": "/auth/email-verification/:token",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/google/error",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/auth/google/:accessToken/:refreshToken",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dashboard/(.*)",
+      "destination": "/index.html"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
