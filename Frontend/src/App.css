@@ -1,0 +1,144 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* custom colors  */
+.custom-bg {
+  background-color: #118a7e;
+}
+
+.custom-color {
+  color: #118a7e;
+}
+
+.custom-main-bg {
+  background-color: #17191d;
+}
+
+.custom-secondary-bg {
+  background-color: #282c33;
+}
+
+/* custom height  */
+.custom-height {
+  height: 100%;
+  min-height: 90vh;
+}
+
+/* custom fonts */
+.custom-font {
+  font-family: "Kanit", sans-serif;
+}
+
+/* button design */
+.button {
+  --color: #118a7e;
+  padding: 0.5em 1.5em;
+  background-color: transparent;
+  border-radius: 0.3em;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.5s;
+  font-weight: 400;
+  font-size: 15px;
+  border: 1px solid var(--color);
+  font-family: inherit;
+  text-transform: uppercase;
+  z-index: 1;
+  color: white;
+}
+
+.button::before,
+.button::after {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  border-radius: 50%;
+  z-index: -1;
+  background-color: var(--color);
+  transition: 1s ease;
+}
+
+.button::before {
+  top: -1em;
+  left: -1em;
+}
+
+.button::after {
+  left: calc(100% + 1em);
+  top: calc(100% + 1em);
+}
+
+.button:hover::before,
+.button:hover::after {
+  height: 410px;
+  width: 410px;
+}
+
+.button:hover {
+  color: rgb(10, 25, 30);
+  border: 1px solid var(--color);
+}
+
+.button:active {
+  border: 1px solid var(--color);
+  filter: brightness(0.8);
+}
+
+@media (max-width: 600px) {
+  .button {
+    font-size: 13px;
+  }
+  .button::after {
+    top: calc(100% + 2em);
+  }
+  .button::before {
+    top: -1.5em;
+    left: -1em;
+  }
+}
+
+/* Subscribe us css */
+.subscribe-group {
+  display: flex;
+  margin: 10px 0;
+  align-items: center;
+}
+
+.subscribe {
+  min-height: 50px;
+  max-width: 250px;
+  width: 100%;
+  padding: 0 1rem;
+  color: #fff;
+  font-size: 15px;
+  border: 1px solid #118a7e;
+  border-radius: 6px 0 0 6px;
+  background-color: transparent;
+}
+
+.subscribe-button--submit {
+  min-height: 50px;
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  background-color: #118a7e;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.subscribe-button--submit:hover {
+  background-color: #118a7e;
+}
+
+.subscribe:focus,
+.subscribe:focus-visible {
+  border-color: #118a7e;
+  outline: none;
+}
+
+/* End Subscribe us  */
