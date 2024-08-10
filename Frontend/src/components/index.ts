@@ -5,6 +5,7 @@ import Input from "./Input";
 import Loader from "./Loader";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
+import ThemeSwitcher from "./ui/ThemeSwitcher";
 
 export {
   HomeHeader,
@@ -14,4 +15,5 @@ export {
   Loader,
   PrivateRoute,
   PublicRoute,
+  ThemeSwitcher,
 };

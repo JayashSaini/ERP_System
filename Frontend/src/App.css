@@ -10,7 +10,7 @@
 }
 
 .custom-main-bg {
-  background-color: #17191d;
+  background-color: black;
 }
 
 .custom-secondary-bg {
@@ -100,45 +100,68 @@
   }
 }
 
-/* Subscribe us css */
-.subscribe-group {
-  display: flex;
-  margin: 10px 0;
-  align-items: center;
-}
+/* Theme Switcher */
 
-.subscribe {
-  min-height: 50px;
-  max-width: 250px;
-  width: 100%;
-  padding: 0 1rem;
-  color: #fff;
-  font-size: 15px;
-  border: 1px solid #118a7e;
-  border-radius: 6px 0 0 6px;
-  background-color: transparent;
-}
-
-.subscribe-button--submit {
-  min-height: 50px;
-  padding: 0.5em 1em;
-  border: none;
-  border-radius: 0 6px 6px 0;
-  background-color: #118a7e;
-  color: #fff;
-  font-size: 15px;
+.theme-checkbox {
+  --toggle-size: 12px; /* Reduced font size */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 4em; /* Reduced width */
+  height: 2em; /* Reduced height */
+  background: -webkit-gradient(
+      linear,
+      left top,
+      right top,
+      color-stop(50%, #d3d2d2),
+      color-stop(50%, #2a2a2a)
+    )
+    no-repeat;
+  background: -o-linear-gradient(left, #d3d2d2 50%, #2a2a2a 50%) no-repeat;
+  background: linear-gradient(to right, #d3d2d2 50%, #2a2a2a 50%) no-repeat;
+  background-size: 200%;
+  background-position: 0;
+  -webkit-transition: 0.4s;
+  -o-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 99em;
+  position: relative;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  font-size: var(--toggle-size);
 }
 
-.subscribe-button--submit:hover {
-  background-color: #118a7e;
+.theme-checkbox::before {
+  content: "";
+  width: 1.5em; /* Reduced size */
+  height: 1.5em; /* Reduced size */
+  position: absolute;
+  top: 0.25em; /* Adjusted position */
+  left: 0.25em; /* Adjusted position */
+  background: -webkit-gradient(
+      linear,
+      left top,
+      right top,
+      color-stop(50%, #d3d2d2),
+      color-stop(50%, #2a2a2a)
+    )
+    no-repeat;
+  background: -o-linear-gradient(left, #d3d2d2 50%, #2a2a2a 50%) no-repeat;
+  background: linear-gradient(to right, #d3d2d2 50%, #2a2a2a 50%) no-repeat;
+  background-size: 200%;
+  background-position: 100%;
+  border-radius: 50%;
+  -webkit-transition: 0.4s;
+  -o-transition: 0.4s;
+  transition: 0.4s;
 }
 
-.subscribe:focus,
-.subscribe:focus-visible {
-  border-color: #118a7e;
-  outline: none;
+.theme-checkbox:checked::before {
+  left: calc(100% - 1.5em - 0.25em); /* Adjusted position */
+  background-position: 0;
 }
 
-/* End Subscribe us  */
+.theme-checkbox:checked {
+  background-position: 100%;
+}
+
+/* End Theme Switcher */

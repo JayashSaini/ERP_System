@@ -10,10 +10,10 @@ const Footer = () => {
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-white">
                 Company
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="text-gray-400 font-medium">
                 <li className="mb-4">
                   <a href="/site/about" className="hover:underline">
                     About Us
@@ -28,10 +28,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold uppercase text-white">
                 Follow us
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="text-gray-400 font-medium">
                 <li className="mb-4">
                   <a
                     href="https://www.instagram.com/jayash_7361/"
@@ -59,10 +59,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
+              <h2 className="mb-6 text-sm font-semibold  uppercase text-white">
                 Legal
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="text-gray-400 font-medium">
                 <li className="mb-4">
                   <a href="#" className="hover:underline">
                     Support
@@ -82,9 +82,9 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+        <hr className="my-6  sm:mx-auto border-gray-700 lg:my-8" />
         <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+          <span className="text-sm  sm:text-center text-gray-400">
             © 2024{" "}
             <a href="https://flowbite.com/" className="hover:underline">
               webworld™
@@ -94,7 +94,7 @@ const Footer = () => {
           <div className="flex mt-4 sm:justify-center sm:mt-0">
             <a
               href="https://discord.com/users/1255438266136657922"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+              className="text-gray-500 hover:text-white ms-5"
             >
               <svg
                 className="w-4 h-4"
@@ -109,7 +109,7 @@ const Footer = () => {
             </a>
             <a
               href="https://x.com/JayashSaini73"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+              className="text-gray-500 hover:text-white ms-5"
             >
               <svg
                 className="w-4 h-4"
@@ -128,7 +128,7 @@ const Footer = () => {
             </a>
             <a
               href="https://github.com/JayashSaini/"
-              className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5"
+              className="text-gray-500 hover:text-white ms-5"
             >
               <svg
                 className="w-4 h-4"

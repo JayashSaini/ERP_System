@@ -17,6 +17,7 @@ import ProjectManagement from "./Dashboard/ProjectManagement";
 import Finance from "./Dashboard/Finance";
 import HumanResource from "./Dashboard/HumanResource";
 import Settings from "./Dashboard/Settings";
+import Profile from "./Dashboard/Profile";
 
 export {
   Home,
@@ -34,4 +35,5 @@ export {
   Finance,
   HumanResource,
   Settings,
+  Profile,
 };

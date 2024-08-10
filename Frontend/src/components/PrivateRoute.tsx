@@ -1,5 +1,5 @@
 // Import required modules and types from React and react-router-dom libraries
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { RootState } from "../app/store";
@@ -10,7 +10,11 @@ const PrivateRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { token, user } = useSelector((state: RootState) => state.auth);
 
   // If there's no token or user ID, redirect to the login page
-  if (!token || !user) return <Navigate to="/auth/login" replace />;
+  useEffect(() => {
+    if (!(token || user)) {
+      <Navigate to="/auth/login" replace />;
+    }
+  }, []);
 
   // If authenticated, render the child components
   return children;

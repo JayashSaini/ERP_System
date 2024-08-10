@@ -31,7 +31,7 @@ const Login: React.FC = () => {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const result = await dispatch(login(data));
     if (login.fulfilled.match(result)) {
-      navigate("/dashboard");
+      navigate("/dashboard/d");
     }
   };
 

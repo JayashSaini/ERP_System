@@ -8,17 +8,20 @@ import {
 } from "@tabler/icons-react";
 import { Link, Outlet } from "react-router-dom";
 import { cn } from "../lib/utils";
-import weblogo from "../assets/logo.png";
+import weblogo from "../assets/logo.svg";
 import { useAppDispatch } from "../hooks/UseAppDispatch";
 import { logout } from "../redux/thunk/auth.thunk";
+import { useAppSelector } from "../hooks/UseAppSelector";
+import { UserInterface } from "../interfaces";
 
 function DashboardLayout() {
   const dispatch = useAppDispatch();
+  const user: UserInterface | null = useAppSelector((state) => state.auth.user);
 
   const links = [
     {
       label: "Dashboard",
-      href: "/dashboard",
+      href: "/dashboard/d",
       icon: <IconCertificate className=" h-5 w-5 flex-shrink-0" />,
     },
     {
@@ -58,7 +61,7 @@ function DashboardLayout() {
   return (
     <div
       className={cn(
-        "w-full h-screen rounded-md flex flex-col md:flex-row   flex-1 border border-neutral-200 dark:border-neutral-700 overflow-hidden"
+        "w-full bg-white dark:bg-black text-black dark:text-white min-h-screen rounded-md flex flex-col md:flex-row   flex-1   overflow-hidden"
       )}
     >
       <Sidebar>
@@ -74,11 +77,11 @@ function DashboardLayout() {
           <div>
             <SidebarLink
               link={{
-                label: "Hello world",
-                href: "#",
+                label: user?.username.toUpperCase() || "User",
+                href: "/dashboard/profile",
                 icon: (
                   <img
-                    src="https://assets.aceternity.com/manu.png"
+                    src={user?.avatar.url}
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -90,7 +93,9 @@ function DashboardLayout() {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Outlet />
+      <div className="w-full h-screen overflow-x-hidden">
+        <Outlet />
+      </div>
     </div>
   );
 }
@@ -101,7 +106,7 @@ export const Logo = () => {
       to="/"
       className="font-normal flex space-x-2 items-center  py-1 relative z-20"
     >
-      <img src={weblogo} alt="" className="w-[70px]" />
+      <img src={weblogo} alt="" className="w-[150px]" />
     </Link>
   );
 };

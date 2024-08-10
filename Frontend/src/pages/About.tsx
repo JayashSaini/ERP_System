@@ -10,7 +10,7 @@ const About: React.FC = () => {
         <img src={aboutus} alt="" className="md:w-[70%] w-full" />
       </div>
       <div className="md:w-1/2 w-full">
-        <h1 className="md:text-4xl text-3xl custom-font font-semibold">
+        <h1 className="md:text-4xl text-3xl custom-font font-semibold custom-color">
           About Us
         </h1>
         <p className="text-base md:w-4/5 w-full">

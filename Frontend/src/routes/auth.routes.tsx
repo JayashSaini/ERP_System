@@ -26,6 +26,15 @@ const AuthRoutes: React.FC = () => (
         path="/email-verification/:token"
         element={<EmailVerificationHandler />}
       />
+      {/* 404 page */}
+      <Route
+        path="*"
+        element={
+          <div className="w-full h-screen flex items-center justify-center custom-main-bg">
+            <h1 className="text-lg">404 Page not found | Not Design yet</h1>
+          </div>
+        }
+      />
     </Route>
   </Routes>
 );

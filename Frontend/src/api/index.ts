@@ -9,7 +9,7 @@ const apiClient = axios.create({
   timeout: 120000,
 });
 
-// Add an interceptor to set authorization header with user token before requests
+// Add a request interceptor to set the authorization header with user token
 apiClient.interceptors.request.use(
   function (config) {
     // Retrieve user token from local storage
@@ -19,6 +19,21 @@ apiClient.interceptors.request.use(
     return config;
   },
   function (error) {
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor to handle responses
+apiClient.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    // Handle errors globally
+    if (error.response.status == 401 || error.response.status == 403) {
+      LocalStorage.clear();
+      window.location.href = "/auth/login";
+    }
     return Promise.reject(error);
   }
 );
