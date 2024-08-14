@@ -30,3 +30,22 @@ export interface AuthState {
   token: string | null;
   isLoading: boolean;
 }
+
+export interface ProfileInterface {
+  firstName?: string;
+  lastName?: string;
+  contactNumber?: string;
+  email: string;
+  contactNumber: string;
+  dateOfBirth?: string | Date;
+  gender?: "Male" | "Female" | "Other";
+  permanentAddress?: string;
+  city?: string;
+  stateProvince?: string;
+  jobTitle?: string;
+  department?: string;
+  joiningDate?: string | Date;
+  employeeStatus?: "FULL_TIME" | "PART_TIME" | "INTERN";
+  workLocation?: "WFO" | "WFH" | "HYBRID";
+  owner: string;
+}

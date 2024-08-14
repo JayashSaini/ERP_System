@@ -11,7 +11,7 @@ const Button: React.FC<
     <>
       <button
         {...props}
-        className={`w-full ${
+        className={`w-full text-white ${
           severity == "primary" ? "py-3" : "py-[6px]"
         } rounded-md text-base flex items-center justify-center border-none ${
           severity == "primary" ? "custom-bg" : "bg-transparent"

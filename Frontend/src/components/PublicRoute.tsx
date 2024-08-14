@@ -10,7 +10,9 @@ const PublicRoute: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { token, user } = useSelector((state: RootState) => state.auth);
 
   // If there is a valid token and user ID, navigate the user to the chat page
-  if (token && user) return <Navigate to="/" replace />;
+  if (token && user?._id) {
+    return <Navigate to="/dashboard/profile" replace />;
+  }
 
   // If no token or user ID exists, render the child components as they are
   return children;

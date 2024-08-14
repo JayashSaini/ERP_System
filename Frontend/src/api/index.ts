@@ -1,6 +1,7 @@
 // Import necessary modules and utilities
 import axios from "axios";
 import { LocalStorage } from "../util/index.ts";
+import { ProfileInterface } from "../interfaces/index.ts";
 
 // Create an Axios instance for API requests
 const apiClient = axios.create({
@@ -86,6 +87,19 @@ const verifyEmailRequest = (token: string) => {
   return apiClient.get(`/users/verify-email/${token}`);
 };
 
+const updateAvatar = (data: any) => {
+  return apiClient.patch(`/users/update-avatar`, data);
+};
+
+// profile routes
+const updateProfile = (data: ProfileInterface) => {
+  return apiClient.patch(`/profile`, data);
+};
+
+const getProfile = () => {
+  return apiClient.get(`/profile`);
+};
+
 // Export all the API functions
 export {
   loginUser,
@@ -97,4 +111,7 @@ export {
   resetPasswordRequest,
   resendEmailVerificationRequest,
   verifyEmailRequest,
+  updateAvatar,
+  getProfile,
+  updateProfile,
 };

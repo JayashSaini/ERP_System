@@ -77,11 +77,11 @@ function DashboardLayout() {
           <div>
             <SidebarLink
               link={{
-                label: user?.username.toUpperCase() || "User",
+                label: user?.username || "User",
                 href: "/dashboard/profile",
                 icon: (
                   <img
-                    src={user?.avatar.url}
+                    src={user?.avatar?.url}
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}

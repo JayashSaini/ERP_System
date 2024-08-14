@@ -11,6 +11,7 @@ import {
   verifyOTP,
   resetPassword,
 } from "../thunk/auth.thunk";
+import { LocalStorage } from "../../util";
 
 const initialState: AuthState = {
   user: null,
@@ -36,6 +37,11 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.accessToken;
       state.email = action.payload.user.email || null;
+    },
+    updateAvatar(state, action: PayloadAction<{ user: UserInterface }>) {
+      console.log("slice ", action.payload.user);
+      state.user = action.payload.user;
+      LocalStorage.set("user", JSON.stringify(state.user));
     },
   },
   extraReducers: (builder) => {
@@ -79,6 +85,7 @@ const authSlice = createSlice({
         state.token = null;
         state.email = null;
         state.isLoading = false;
+        window.location.href = "/auth/login";
         toast.success("Logout successful!");
       })
       .addCase(logout.rejected, (state, action) => {
@@ -126,5 +133,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearState, setUser } = authSlice.actions;
+export const { clearState, setUser, updateAvatar } = authSlice.actions;
 export default authSlice.reducer;
