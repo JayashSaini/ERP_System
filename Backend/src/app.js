@@ -12,6 +12,7 @@ const app = express();
 const startApp = () => {
   // import routes
   const userRouter = require('./routes/auth/user.routes.js');
+  const profileRouter = require('./routes/profile.routes.js');
 
   app.use(
     cors({
@@ -33,6 +34,7 @@ const startApp = () => {
 
   // routes
   app.use('/api/v1/users', userRouter);
+  app.use('/api/v1/profile', profileRouter);
 
   // if endpoint not found
   app.use((_, __, next) => {
