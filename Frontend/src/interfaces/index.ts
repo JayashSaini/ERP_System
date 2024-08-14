@@ -34,9 +34,8 @@ export interface AuthState {
 export interface ProfileInterface {
   firstName?: string;
   lastName?: string;
-  contactNumber?: string;
-  email: string;
-  contactNumber: string;
+  contactNumber?: string | number;
+  email?: string;
   dateOfBirth?: string | Date;
   gender?: "Male" | "Female" | "Other";
   permanentAddress?: string;
