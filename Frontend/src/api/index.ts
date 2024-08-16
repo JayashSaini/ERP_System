@@ -29,11 +29,21 @@ apiClient.interceptors.response.use(
   function (response) {
     return response;
   },
-  function (error) {
+  async function (error) {
     // Handle errors globally
-    if (error.response.status == 401 || error.response.status == 403) {
+    if (error.response.status == 403) {
       LocalStorage.clear();
       window.location.href = "/auth/login";
+    }
+    if (error.response.status == 401) {
+      try {
+        const response = await axios.post("/api/v1/users/refresh-token");
+        const token = response.data.data.accessToken;
+        LocalStorage.set("token", token);
+        return window.location.reload();
+      } catch (error) {
+        window.location.href = "/auth/login";
+      }
     }
     return Promise.reject(error);
   }

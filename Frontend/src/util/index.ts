@@ -29,9 +29,6 @@ export const requestHandler = async (
       const errorObject = error.response.data.errors[0];
       const [_, value] = Object.entries(errorObject)[0];
       onError(value as string);
-    } else if ([401, 403].includes(error?.response.data?.statusCode)) {
-      LocalStorage.clear();
-      if (isBrowser) window.location.href = "/auth/login"; // Redirect to login page
     } else {
       onError(error.response?.data?.message || "Something went wrong");
     }

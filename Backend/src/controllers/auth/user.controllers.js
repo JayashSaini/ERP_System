@@ -40,8 +40,10 @@ const generateAccessAndRefreshTokens = async (userId) => {
 };
 
 const options = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
+  maxAge: 24 * 60 * 60 * 1000 * 10, // Cookie will expire after 1 day
+  httpOnly: true, // Cookie is only accessible via HTTP(S) and not client-side JavaScript
+  secure: process.env.NODE_ENV === 'production', // Cookie will only be sent over HTTPS if in production
+  sameSite: 'strict', // SameSite attribute to prevent CSRF attacks
 };
 
 function generateOtp() {
@@ -425,9 +427,16 @@ const resendEmailVerification = asyncHandler(async (req, res) => {
 });
 
 const userSelf = asyncHandler(async (req, res) => {
-  return res
-    .status(200)
-    .json(new ApiResponse(200, req.user, 'User fetched successfully'));
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        user: req.user,
+        accessToken: req.cookies.accessToken,
+      },
+      'User fetched successfully'
+    )
+  );
 });
 
 const updateAvatar = asyncHandler(async (req, res) => {

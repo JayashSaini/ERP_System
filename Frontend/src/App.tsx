@@ -5,23 +5,22 @@ import AuthRoutesWrapper from "./routes/auth.routes";
 import DashboardRoutesWrapper from "./routes/dashboard.routes";
 import { Home } from "./pages";
 import { useAppDispatch } from "./hooks/UseAppDispatch";
-import { useEffect } from "react";
-import { LocalStorage } from "./util";
+import { useEffect, useState } from "react";
+import { LocalStorage, requestHandler } from "./util";
 import { setUser } from "./redux/slices/auth.slice";
 import { setTheme } from "./redux/slices/theme.slice";
 import { useAppSelector } from "./hooks/UseAppSelector";
+import { selfUser } from "./api";
+import { Loader } from "./components";
+import axios from "axios";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const theme = useAppSelector((state) => state.theme);
-
   const dispatch = useAppDispatch();
-  const user = LocalStorage.get("user");
-  const token = LocalStorage.get("token");
 
   useEffect(() => {
-    if (user && token) {
-      dispatch(setUser({ user, accessToken: token }));
-    }
+    setAuthenticationState();
     // Load theme from localStorage or system preference
     const savedTheme = localStorage.getItem("theme") || "system";
     if (savedTheme === "system") {
@@ -39,7 +38,30 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  return (
+  const setAuthenticationState = () => {
+    setIsLoading(true);
+    const user = LocalStorage.get("user");
+    const token = LocalStorage.get("token");
+    if (user && token) {
+      dispatch(setUser({ user, accessToken: token }));
+    } else {
+      axios
+        .get("/api/v1/users/self")
+        .then(({ data }) => {
+          const user = data.data.user;
+          const token = data.data.accessToken;
+          LocalStorage.set("user", user);
+          LocalStorage.set("token", token);
+          dispatch(setUser({ user, accessToken: token }));
+        })
+        .catch(() => {});
+    }
+    setIsLoading(false);
+  };
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <Routes>
       {/* Wrap all routes with Layout */}
       <Route path="/" element={<Layout />}>
