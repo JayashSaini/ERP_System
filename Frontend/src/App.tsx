@@ -6,11 +6,10 @@ import DashboardRoutesWrapper from "./routes/dashboard.routes";
 import { Home } from "./pages";
 import { useAppDispatch } from "./hooks/UseAppDispatch";
 import { useEffect, useState } from "react";
-import { LocalStorage, requestHandler } from "./util";
+import { LocalStorage } from "./util";
 import { setUser } from "./redux/slices/auth.slice";
 import { setTheme } from "./redux/slices/theme.slice";
 import { useAppSelector } from "./hooks/UseAppSelector";
-import { selfUser } from "./api";
 import { Loader } from "./components";
 import axios from "axios";
 
