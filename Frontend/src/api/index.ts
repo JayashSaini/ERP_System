@@ -42,6 +42,7 @@ apiClient.interceptors.response.use(
         LocalStorage.set("token", token);
         return window.location.reload();
       } catch (error) {
+        LocalStorage.clear();
         window.location.href = "/auth/login";
       }
     }
