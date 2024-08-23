@@ -4,6 +4,10 @@ const {
   EmployeeWorkLocationEnum,
   AvailableEmployeeSWorkLocation,
   EmployeeStatusEnum,
+  DepartmentEnum,
+  AvailableStatus,
+  StatusEnum,
+  AvailableDepartments,
 } = require('../constants');
 
 const profileSchema = new mongoose.Schema(
@@ -53,7 +57,8 @@ const profileSchema = new mongoose.Schema(
     },
     department: {
       type: String,
-      default: '',
+      enum: AvailableDepartments,
+      default: DepartmentEnum.OTHERS,
     },
     joiningDate: {
       type: Date,
@@ -63,6 +68,11 @@ const profileSchema = new mongoose.Schema(
       type: String,
       enum: AvailableEmployeeStatus,
       default: EmployeeStatusEnum.FULL_TIME,
+    },
+    status: {
+      type: String,
+      enum: AvailableStatus,
+      default: StatusEnum.ACTIVE,
     },
     workLocation: {
       type: String,

@@ -61,7 +61,7 @@ function DashboardLayout() {
   return (
     <div
       className={cn(
-        "w-full bg-white dark:bg-black text-black dark:text-white min-h-screen rounded-md flex flex-col md:flex-row   flex-1   overflow-hidden"
+        "w-full bg-neutral-50 dark:bg-black text-neutral-800 dark:text-neutral-200 min-h-screen rounded-md flex flex-col md:flex-row   flex-1   overflow-hidden"
       )}
     >
       <Sidebar>

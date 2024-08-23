@@ -37,7 +37,7 @@ export const DesktopSidebar = ({
   return (
     <motion.div
       className={cn(
-        "h-full px-4 py-4 hidden md:flex md:flex-col bg-slate-950 dark:bg-[#222831] w-[300px] flex-shrink-0",
+        "h-full px-4 py-4 hidden md:flex md:flex-col bg-white  dark:bg-neutral-900 w-[300px] flex-shrink-0",
         className
       )}
       {...props}
@@ -58,7 +58,7 @@ export const MobileSidebar = ({
   return (
     <div
       className={cn(
-        "h-10 px-4 py-7 flex flex-row md:hidden items-center justify-between bg-slate-950 dark:bg-[#222831] w-full"
+        "h-10 px-4 py-7 flex flex-row md:hidden items-center justify-between bg-white dark:bg-neutral-900 w-full"
       )}
       {...props}
     >
@@ -67,7 +67,7 @@ export const MobileSidebar = ({
           <img src={weblogo} alt="" className="w-[90px]" />
         </Link>
         <IconMenu2
-          className="text-white"
+          className="dark:text-neutral-200 text-neutral-700"
           onClick={() => dispatch(toggleSidebar())}
         />
       </div>
@@ -82,12 +82,12 @@ export const MobileSidebar = ({
               ease: "easeInOut",
             }}
             className={cn(
-              "fixed h-full w-full inset-0 bg-slate-950 dark:bg-[#222831] p-10 z-[100] flex flex-col justify-between",
+              "fixed h-full w-full inset-0 bg-white dark:bg-neutral-900 p-10 z-[100] flex flex-col justify-between",
               className
             )}
           >
             <div
-              className="absolute right-10 top-10 z-50 text-white"
+              className="absolute right-10 top-10 z-50 dark:text-neutral-200 text-neutral-700"
               onClick={() => dispatch(toggleSidebar())}
             >
               <IconX />
@@ -113,7 +113,7 @@ export const SidebarLink = ({
 
   return link?.onClick ? (
     <div
-      className="cursor-pointer text-white flex items-center justify-start gap-2 group/sidebar py-2 px-1 rounded-sm ease-in-out duration-150 "
+      className="cursor-pointer dark:text-neutral-200 text-neutral-700 flex items-center justify-start gap-2 group/sidebar py-2 px-1 rounded-sm ease-in-out duration-150 uppercase text-sm "
       onClick={link.onClick}
     >
       {link.icon}
@@ -124,7 +124,7 @@ export const SidebarLink = ({
       to={link.href}
       className={({ isActive }) =>
         cn(
-          "text-white flex items-center justify-start gap-2 group/sidebar py-2 px-1  ease-in-out duration-150  rounded-sm",
+          "dark:text-neutral-200 text-neutral-700 flex items-center justify-start gap-2 group/sidebar py-2 px-1  ease-in-out duration-150  rounded-sm uppercase text-sm",
           {
             "text-[#118a7e]": isActive, // Apply color when active
             "hover:text-[#118a7e]": !isActive, // Apply hover color when not active

@@ -39,7 +39,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: AvailableUserRoles,
     default: UserRolesEnum.USER,
-    required: true,
   },
   password: {
     type: String,

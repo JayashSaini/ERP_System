@@ -25,6 +25,7 @@ export const requestHandler = async (
       onSuccess(data);
     }
   } catch (error: any) {
+    console.log("API request failed:", error);
     if (error.response?.status === 422) {
       const errorObject = error.response.data.errors[0];
       const [_, value] = Object.entries(errorObject)[0];
@@ -77,3 +78,15 @@ export class LocalStorage {
     localStorage.clear();
   }
 }
+
+// Function to format mongodb date
+export const formatMongoDate = (createdAt?: string): string => {
+  const date = new Date(createdAt || Date.now());
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  return `${formattedDate}`;
+};

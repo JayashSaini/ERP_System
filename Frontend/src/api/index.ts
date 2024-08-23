@@ -108,7 +108,11 @@ const updateProfile = (data: ProfileInterface) => {
 };
 
 const getProfile = () => {
-  return apiClient.get(`/profile`);
+  return apiClient.get(`/profile/self`);
+};
+
+const getProfileById = (profileId: string) => {
+  return apiClient.get(`/profile/` + profileId);
 };
 
 // Export all the API functions
@@ -125,4 +129,5 @@ export {
   updateAvatar,
   getProfile,
   updateProfile,
+  getProfileById,
 };

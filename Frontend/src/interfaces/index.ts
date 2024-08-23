@@ -1,3 +1,5 @@
+import { DepartmentsEnum } from "../constants";
+
 export interface UserAvatar {
   url: string;
   public_id: string | null;
@@ -12,7 +14,7 @@ export interface UserInterface {
   role: "ADMIN" | "USER";
   favorites: string[];
   enrollments: string[];
-  loginType: "EMAIL_PASSWORD" | "GOOGLE";
+  loginType: "EMAIL_PASSWORD";
   isEmailVerified: boolean;
   __v: number;
 }
@@ -42,7 +44,7 @@ export interface ProfileInterface {
   city?: string;
   stateProvince?: string;
   jobTitle?: string;
-  department?: string;
+  department?: (typeof DepartmentsEnum)[number];
   joiningDate?: string | Date;
   employeeStatus?: "FULL_TIME" | "PART_TIME" | "INTERN";
   workLocation?: "WFO" | "WFH" | "HYBRID";

@@ -62,6 +62,10 @@ router.route('/update-avatar').patch(
 // assign roles
 router
   .route('/assign-role')
-  .patch(verifyJWT, verifyPermission([UserRolesEnum.ADMIN]), assignRole);
+  .patch(
+    verifyJWT,
+    verifyPermission([UserRolesEnum.ADMIN, UserRolesEnum.HR]),
+    assignRole
+  );
 
 module.exports = router;

@@ -6,6 +6,7 @@ import Loader from "./Loader";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import ThemeSwitcher from "./ui/ThemeSwitcher";
+import UserList from "./Dashboard/UserList";
 
 export {
   HomeHeader,
@@ -16,4 +17,5 @@ export {
   PrivateRoute,
   PublicRoute,
   ThemeSwitcher,
+  UserList,
 };

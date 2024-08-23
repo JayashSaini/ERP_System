@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { profileSchema } from "../../util/schema";
 import { updateAvatar } from "../../redux/slices/auth.slice";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
+import { Departments, DepartmentsEnum } from "../../constants";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);
@@ -95,8 +96,8 @@ const Profile = () => {
     requestHandler(
       async () => getProfile(),
       setLoading,
-      ({ data }) => {
-        const profile = data[0];
+      (res) => {
+        const profile = res.data;
         const dateOfBirth = new Date(profile.dateOfBirth)
           .toISOString()
           .split("T")[0];
@@ -120,7 +121,10 @@ const Profile = () => {
         setValue("employeeStatus", profile.employeeStatus);
         setValue("workLocation", profile.workLocation);
       },
-      (err: any) => toast.error(err.message)
+      (err: any) => {
+        console.log("error is; ", err);
+        toast.error(err.message);
+      }
     );
   }, []);
 
@@ -299,49 +303,15 @@ const Profile = () => {
                 className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-slate-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
                 required={true}
               >
-                <option
-                  className="dark:bg-black bg-white dark:text-white text-black"
-                  value="HR"
-                >
-                  HR
-                </option>
-                <option
-                  className="dark:bg-black bg-white dark:text-white text-black"
-                  value="Sales"
-                >
-                  Sales
-                </option>
-                <option
-                  className="dark:bg-black bg-white dark:text-white text-black"
-                  value="Marketing"
-                >
-                  Marketing
-                </option>
-                <option
-                  className="dark:bg-black bg-white dark:text-white text-black"
-                  value="WebDevelopment"
-                >
-                  Web Development
-                </option>
-                <option
-                  className="dark:bg-black bg-white dark:text-white text-black"
-                  value="AppDevelopment"
-                >
-                  App Development
-                </option>
-                <option
-                  className="dark:bg-black bg-white dark:text-white text-black"
-                  value="WebDesigning"
-                >
-                  Web Designing
-                </option>
-                <option
-                  className="dark:bg-black bg-white dark:text-white text-black"
-                  value="Sales"
-                >
-                  UI/UX
-                </option>
-                {/* Add other departments as needed */}
+                {DepartmentsEnum.map((department) => (
+                  <option
+                    className="dark:bg-black bg-white dark:text-white text-black"
+                    value={department}
+                    key={department}
+                  >
+                    {department.replace(/_/g, " ")}
+                  </option>
+                ))}
               </select>
               <div className="text-red-500">{errors.department?.message}</div>
             </div>

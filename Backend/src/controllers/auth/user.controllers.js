@@ -12,6 +12,7 @@ const {
   UserLoginType,
   USER_OTP_EXPIRY,
   UserRolesEnum,
+  AvailableStatus,
 } = require('../../constants.js');
 const { ApiError } = require('../../utils/ApiError.js');
 const { ApiResponse } = require('../../utils/ApiResponse.js');
@@ -476,6 +477,10 @@ const assignRole = asyncHandler(async (req, res) => {
   // Validate the provided role
   if (!(role in UserRolesEnum)) {
     throw new ApiError(400, 'Invalid role');
+  }
+
+  if (role === UserRolesEnum.ADMIN) {
+    throw new ApiError(403, 'Admin role is reserved for the system admin');
   }
 
   // Find the user by username

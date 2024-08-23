@@ -8,6 +8,7 @@ import {
   Settings,
   UserManagement,
   Profile,
+  UserProfile,
 } from "../pages";
 import { PrivateRoute } from "../components";
 import DashboardLayout from "../layouts/Dashboard.layout";
@@ -17,6 +18,7 @@ const DashboardRoutes: React.FC = () => (
     <Route path="/" element={<DashboardLayout />}>
       <Route index={true} path="/d" element={<Dashboard />} />
       <Route path="/user-management" element={<UserManagement />} />
+      <Route path="/user-management/:profileId" element={<UserProfile />} />
       <Route path="/project-management" element={<ProjectManagement />} />
       <Route path="/finance" element={<Finance />} />
       <Route path="/human-resources" element={<HumanResource />} />

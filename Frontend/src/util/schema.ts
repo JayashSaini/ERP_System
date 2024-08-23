@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { DepartmentsEnum } from "../constants";
 
 // Defining validation userLoginSchema with Yup
 export const userLoginSchema = yup
@@ -115,7 +116,7 @@ export const profileSchema = yup.object().shape({
     .string()
     .trim()
     .notRequired()
-    .min(1, "Department is required"),
+    .oneOf(DepartmentsEnum, "Employee department must be selected"),
   joiningDate: yup
     .date()
     .notRequired()
