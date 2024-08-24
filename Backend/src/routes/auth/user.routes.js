@@ -61,7 +61,7 @@ router.route('/update-avatar').patch(
 
 // assign roles
 router
-  .route('/assign-role')
+  .route('/assign-role/:userId')
   .patch(
     verifyJWT,
     verifyPermission([UserRolesEnum.ADMIN, UserRolesEnum.HR]),

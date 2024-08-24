@@ -27,7 +27,7 @@ router.route('/:profileId').get(getProfileById);
 
 // set User status
 router
-  .route('/status/:userId')
+  .route('/status/:profileId')
   .patch(
     verifyPermission([UserRolesEnum.ADMIN, UserRolesEnum.HR]),
     assignUserStatus

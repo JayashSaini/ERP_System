@@ -102,7 +102,14 @@ const updateAvatar = (data: any) => {
   return apiClient.patch(`/users/update-avatar`, data);
 };
 
+const assignUserRole = (userId: string, role: string) => {
+  return apiClient.patch("users/assign-role/" + userId, { role });
+};
 // profile routes
+
+const getAllProfiles = () => {
+  return apiClient.get(`/profile`);
+};
 const updateProfile = (data: ProfileInterface) => {
   return apiClient.patch(`/profile`, data);
 };
@@ -113,6 +120,9 @@ const getProfile = () => {
 
 const getProfileById = (profileId: string) => {
   return apiClient.get(`/profile/` + profileId);
+};
+const setProfileStatus = (profileId: string, status: string) => {
+  return apiClient.patch(`/profile/status/${profileId}`, { status });
 };
 
 // Export all the API functions
@@ -130,4 +140,7 @@ export {
   getProfile,
   updateProfile,
   getProfileById,
+  getAllProfiles,
+  assignUserRole,
+  setProfileStatus,
 };

@@ -14,20 +14,31 @@ export const Departments = {
 
 export const AvailableUserRoles = {
   USER: "USER",
+  ADMIN: "ADMIN",
   HR: "HR",
   TEAM_LEADER: "TEAM_LEADER",
   PROJECT_MANAGER: "PROJECT_MANAGER",
   EMPLOYEE: "EMPLOYEE",
   CLIENT_SUPPORT: "CLIENT_SUPPORT",
-};
+} as const;
+
+export const AvailableUserRolesDropDown = {
+  USER: "USER",
+  HR: "HR",
+  TEAM_LEADER: "TEAM_LEADER",
+  PROJECT_MANAGER: "PROJECT_MANAGER",
+  EMPLOYEE: "EMPLOYEE",
+  CLIENT_SUPPORT: "CLIENT_SUPPORT",
+} as const;
 
 export const AvailableStatus = {
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",
   RESIGNED: "RESIGNED",
-};
+} as const;
 
 export const UserRolesEnum = Object.values(AvailableUserRoles);
+export const UserRolesDropdownEnum = Object.values(AvailableUserRolesDropDown);
 export const StatusEnum = Object.values(AvailableStatus);
 
 export const DepartmentsEnum = Object.values(Departments);

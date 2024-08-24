@@ -2,28 +2,84 @@ const {
   DepartmentEnum,
   EmployeeStatusEnum,
   EmployeeWorkLocationEnum,
+  AvailableStatus,
 } = require('../constants.js');
 const Profile = require('../models/profile.models.js');
+const { ApiError } = require('../utils/ApiError.js');
 const { ApiResponse } = require('../utils/ApiResponse.js');
 const { asyncHandler } = require('../utils/asyncHandler.js');
+const mongoose = require('mongoose');
 
 const getAllProfile = asyncHandler(async (req, res) => {
-  const profiles = await Profile.find({});
+  const ProfileAggregate = [
+    {
+      $lookup: {
+        from: 'users', // The collection name for the User model
+        localField: 'owner', // The field in your local model that corresponds to the user's ID
+        foreignField: '_id', // The field in the User model that corresponds to the user's ID
+        as: 'userInfo', // The name of the array field to store the joined documents
+      },
+    },
+    {
+      $unwind: '$userInfo', // Unwind the array to get a single document instead of an array
+    },
+    {
+      $addFields: {
+        role: '$userInfo.role', // Add the role field from the joined User model to the Profile document
+      },
+    },
+    {
+      $project: {
+        userInfo: 0, // Exclude the userInfo array from the final output, if you don't need it
+        // Alternatively, you could exclude any other fields you don't need.
+      },
+    },
+  ];
+  const profiles = await Profile.aggregate(ProfileAggregate);
+
   return res
     .status(200)
     .json(new ApiResponse(200, profiles, 'Profiles fetched successfully'));
 });
 
 const getProfileById = asyncHandler(async (req, res) => {
-  const profile = await Profile.findById(req.params?.profileId);
-  if (!profile) {
-    return res
-      .status(404)
-      .json(new ApiResponse(404, null, 'Profile not found'));
+  const profileId = req.params?.profileId;
+
+  const profile = await Profile.aggregate([
+    {
+      $match: { _id: new mongoose.Types.ObjectId(profileId) },
+    },
+    {
+      $lookup: {
+        from: 'users', // The name of the users collection
+        localField: 'owner', // The field in Profile collection that references the user
+        foreignField: '_id', // The field in the users collection to match with
+        as: 'userDetails', // The name of the field where the joined documents will be stored
+      },
+    },
+    {
+      $unwind: '$userDetails', // Unwind the userDetails array to get an object instead of an array
+    },
+    {
+      $addFields: {
+        avatar: '$userDetails.avatar',
+        role: '$userDetails.role',
+      },
+    },
+    {
+      $project: {
+        userDetails: 0, // Optionally remove the `userDetails` field if you don't need it anymore
+      },
+    },
+  ]);
+
+  if (!profile.length) {
+    throw new ApiError(404, 'Profile not found');
   }
+
   return res
     .status(200)
-    .json(new ApiResponse(200, profile, 'Profile fetched successfully'));
+    .json(new ApiResponse(200, profile[0], 'Profile fetched successfully'));
 });
 
 const getMyProfile = asyncHandler(async (req, res) => {
@@ -128,7 +184,7 @@ const updateMyProfile = asyncHandler(async (req, res) => {
 
 const assignUserStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
-  const { userId } = req.params;
+  const { profileId } = req.params;
 
   // Validate the provided status
   if (!AvailableStatus.includes(status)) {
@@ -136,7 +192,7 @@ const assignUserStatus = asyncHandler(async (req, res) => {
   }
 
   // Find the user by userId
-  const profile = await Profile.findOne({ owner: userId });
+  const profile = await Profile.findById(profileId);
 
   if (!profile) {
     throw new ApiError(404, 'Profile not found');

@@ -18,7 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { profileSchema } from "../../util/schema";
 import { updateAvatar } from "../../redux/slices/auth.slice";
 import { useAppDispatch } from "../../hooks/UseAppDispatch";
-import { Departments, DepartmentsEnum } from "../../constants";
+import { DepartmentsEnum } from "../../constants";
 
 const Profile = () => {
   const [loading, setLoading] = useState(true);

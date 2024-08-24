@@ -1,4 +1,4 @@
-import { DepartmentsEnum } from "../constants";
+import { DepartmentsEnum, StatusEnum, UserRolesEnum } from "../constants";
 
 export interface UserAvatar {
   url: string;
@@ -11,7 +11,7 @@ export interface UserInterface {
   avatar: UserAvatar;
   username: string;
   email: string;
-  role: "ADMIN" | "USER";
+  role: (typeof UserRolesEnum)[number];
   favorites: string[];
   enrollments: string[];
   loginType: "EMAIL_PASSWORD";
@@ -34,6 +34,7 @@ export interface AuthState {
 }
 
 export interface ProfileInterface {
+  _id: string;
   firstName?: string;
   lastName?: string;
   contactNumber?: string | number;
@@ -48,5 +49,8 @@ export interface ProfileInterface {
   joiningDate?: string | Date;
   employeeStatus?: "FULL_TIME" | "PART_TIME" | "INTERN";
   workLocation?: "WFO" | "WFH" | "HYBRID";
-  owner: string;
+  owner?: string;
+  role?: (typeof UserRolesEnum)[number];
+  status?: (typeof StatusEnum)[number];
+  avatar?: UserAvatar;
 }

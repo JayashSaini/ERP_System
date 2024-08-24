@@ -1,4 +1,4 @@
-import { UserList } from "../../../components";
+import { AccessDenied, UserList } from "../../../components";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,25 +8,88 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import {
+  requestHandler,
+  sortProfilesByDepartment,
+  sortProfilesByRole,
+} from "../../../util";
+import { getAllProfiles } from "../../../api";
+import { toast } from "sonner";
+import { Loader } from "../../../components";
+import { ProfileInterface } from "../../../interfaces";
+import { useAppSelector } from "../../../hooks/UseAppSelector";
 
 const UserManagement = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
+
   // sort & filter
-  const [sortType, setSortType] = useState("all");
+  const [sortType, setSortType] = useState("role");
+  const role = useAppSelector((state) => state.auth.user?.role);
 
   // filter tasks by status
   const sortAndFilterHandler = (sortType: string) => {
-    console.log("sortType: ", sortType);
+    setProfiles((prev) => {
+      let sortedProfiles = [...prev]; // Create a copy of the profiles array to avoid mutating state directly
+
+      switch (sortType) {
+        case "role":
+          sortedProfiles = sortProfilesByRole(sortedProfiles);
+          break;
+        case "department":
+          sortedProfiles = sortProfilesByDepartment(sortedProfiles);
+          break;
+        case "nameAsc":
+          sortedProfiles.sort((a: any, b: any) =>
+            a.firstName.localeCompare(b.firstName)
+          );
+          break;
+        case "nameDesc":
+          sortedProfiles.sort((a: any, b: any) =>
+            b.firstName.localeCompare(a.firstName)
+          );
+          break;
+        case "statusActive":
+          sortedProfiles.sort((a: any) => (a.status === "ACTIVE" ? -1 : 1));
+          break;
+        case "statusInactive":
+          sortedProfiles.sort((a: any) => (a.status === "INACTIVE" ? -1 : 1));
+          break;
+        default:
+          // Handle default case or do nothing if needed
+          break;
+      }
+
+      return sortedProfiles; // Return the sorted profiles array
+    });
   };
 
-  return (
+  useEffect(() => {
+    requestHandler(
+      async () => getAllProfiles(),
+      setIsLoading,
+      ({ data }) => {
+        setProfiles(data);
+      },
+      (e) => toast.error(e)
+    );
+  }, []);
+
+  if (!(role == "ADMIN" || role == "HR")) {
+    return <AccessDenied />;
+  }
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="sm:p-5 px-2 select-none">
       <div className="w-full py-2 flex items-end justify-between">
         <DropdownMenu>
-          <DropdownMenuTrigger className="uppercase sm:text-base text-sm custom-font rounded-md dark:text-neutral-200 text-neutral-900">
+          <DropdownMenuTrigger className="uppercase sm:text-base text-sm custom-font rounded-md dark:text-neutral-200 text-neutral-900 focus:outline-none">
             Sort & Filter
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 dark:bg-neutral-800 bg-neutral-200 text-neutral-900 dark:text-neutral-200">
+          <DropdownMenuContent className="w-56 dark:bg-neutral-900 bg-neutral-200 text-neutral-900 dark:text-neutral-200">
             <DropdownMenuLabel>Sort & Filter</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuRadioGroup
@@ -35,24 +98,28 @@ const UserManagement = () => {
                 setSortType(e);
                 sortAndFilterHandler(e);
               }}
-              className="dark:bg-neutral-900 bg-neutral-100  text-neutral-900 dark:text-neutral-200"
+              className="dark:bg-neutral-800 bg-neutral-100 text-neutral-900 dark:text-neutral-200"
             >
-              <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="newest">
-                Newest
+              <DropdownMenuRadioItem value="role">Role</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="department">
+                Department
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="oldest">
-                Oldest
+              <DropdownMenuRadioItem value="nameAsc">
+                Name: A-Z
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="activeTask">
-                Active Task
+              <DropdownMenuRadioItem value="nameDesc">
+                Name: Z-A
               </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="completedTask">
-                Completed Task
+              <DropdownMenuRadioItem value="statusActive">
+                Status: Active
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="statusInactive">
+                Status: Inactive
               </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
+
         <button className="button dark:text-neutral-200 text-neutral-700 hover:text-white">
           SPREADSHEET
         </button>
@@ -77,15 +144,9 @@ const UserManagement = () => {
           {/* Action */}
           <div className="w-full text-center sm:col-span-1 col-span-3 m-auto flex justify-end "></div>
         </div>
-        <UserList />
-        <UserList />
-        <UserList />
-        <UserList />
-        <UserList />
-        <UserList />
-        <UserList />
-        <UserList />
-        <UserList />
+        {profiles.map((profile) => (
+          <UserList key={profile._id} profile={profile} />
+        ))}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 // Importing necessary modules and interfaces
 import { AxiosResponse } from "axios";
-import { ApiResponse } from "../interfaces";
+import { ApiResponse, ProfileInterface } from "../interfaces";
 
 // A utility function for handling API requests with loading, success, and error handling
 export const requestHandler = async (
@@ -25,7 +25,6 @@ export const requestHandler = async (
       onSuccess(data);
     }
   } catch (error: any) {
-    console.log("API request failed:", error);
     if (error.response?.status === 422) {
       const errorObject = error.response.data.errors[0];
       const [_, value] = Object.entries(errorObject)[0];
@@ -89,4 +88,56 @@ export const formatMongoDate = (createdAt?: string): string => {
   };
   const formattedDate = date.toLocaleDateString("en-US", options);
   return `${formattedDate}`;
+};
+
+const roleOrder: string[] = [
+  "ADMIN",
+  "HR",
+  "PROJECT_MANAGER",
+  "TEAM_LEADER",
+  "EMPLOYEE",
+  "CLIENT_SUPPORT",
+  "USER", // Ensure USER is the last in case it's not listed above
+];
+
+const departmentOrder: string[] = [
+  "HR",
+  "IT",
+  "MARKETING",
+  "FINANCE",
+  "ADMINISTRATION",
+  "SALES",
+  "MANAGEMENT",
+  "MARKETING_AND_PR",
+  "TECHNICAL_SUPPORT",
+  "DESIGNING",
+  "OTHERS", // Ensure OTHERS is the last in case it's not listed above
+];
+
+// Function to sort profiles based on roles
+export const sortProfilesByRole = (
+  profiles: ProfileInterface[]
+): ProfileInterface[] => {
+  return profiles.sort((a, b) => {
+    // Get the index of each profile's role in the roleOrder array
+    const indexA = roleOrder.indexOf(a.role || "USER");
+    const indexB = roleOrder.indexOf(b.role || "USER");
+
+    // Sort profiles based on the role index
+    return indexA - indexB;
+  });
+};
+
+// Function to sort profiles based on departments
+export const sortProfilesByDepartment = (
+  profiles: ProfileInterface[]
+): ProfileInterface[] => {
+  return profiles.sort((a, b) => {
+    // Get the index of each profile's department in the departmentOrder array
+    const indexA = departmentOrder.indexOf(a.department || "OTHERS");
+    const indexB = departmentOrder.indexOf(b.department || "OTHERS");
+
+    // Sort profiles based on the department index
+    return indexA - indexB;
+  });
 };

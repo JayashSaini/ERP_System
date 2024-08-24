@@ -7,6 +7,7 @@ import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import ThemeSwitcher from "./ui/ThemeSwitcher";
 import UserList from "./Dashboard/UserList";
+import AccessDenied from "./AccessDenied";
 
 export {
   HomeHeader,
@@ -18,4 +19,5 @@ export {
   PublicRoute,
   ThemeSwitcher,
   UserList,
+  AccessDenied,
 };

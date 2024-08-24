@@ -472,7 +472,15 @@ const updateAvatar = asyncHandler(async (req, res) => {
 });
 
 const assignRole = asyncHandler(async (req, res) => {
-  const { role, username } = req.body;
+  const { role } = req.body;
+  const userId = req.params.userId;
+
+  if (userId == req.user?._id) {
+    throw new ApiError(
+      400,
+      'You do not have permission to change your own role.'
+    );
+  }
 
   // Validate the provided role
   if (!(role in UserRolesEnum)) {
@@ -484,7 +492,7 @@ const assignRole = asyncHandler(async (req, res) => {
   }
 
   // Find the user by username
-  const user = await User.findOne({ username });
+  const user = await User.findById(userId);
 
   if (!user) {
     throw new ApiError(404, 'User not found');

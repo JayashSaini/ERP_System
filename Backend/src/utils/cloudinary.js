@@ -24,7 +24,7 @@ async function uploadOnCloudinary(localPath, isAvatarSize = false) {
 
     if (isAvatarSize) {
       imageSpecification = {
-        transformation: { width: 128, height: 128, crop: 'fill' },
+        transformation: { width: 512, height: 512, crop: 'fill' },
       };
     }
 
