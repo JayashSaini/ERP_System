@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { Loader } from "../../../components";
 import { ProfileInterface } from "../../../interfaces";
 import { useAppSelector } from "../../../hooks/UseAppSelector";
+import * as XLSX from "xlsx";
 
 const UserManagement = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -79,7 +80,19 @@ const UserManagement = () => {
   if (!(role == "ADMIN" || role == "HR")) {
     return <AccessDenied />;
   }
+  const spreadsheetHandler = () => {
+    // Create a new workbook
+    const wb = XLSX.utils.book_new();
 
+    // Convert JSON data to worksheet
+    const ws = XLSX.utils.json_to_sheet(profiles);
+
+    // Append the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Profiles");
+
+    // Generate buffer and download
+    XLSX.writeFile(wb, "profiles.xlsx");
+  };
   return isLoading ? (
     <Loader />
   ) : (
@@ -120,7 +133,10 @@ const UserManagement = () => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <button className="button dark:text-neutral-200 text-neutral-700 hover:text-white">
+        <button
+          className="button dark:text-neutral-200 text-neutral-700 hover:text-white"
+          onClick={spreadsheetHandler}
+        >
           SPREADSHEET
         </button>
       </div>
