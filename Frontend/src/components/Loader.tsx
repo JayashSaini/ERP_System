@@ -1,13 +1,27 @@
+import { useEffect, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 
 const Loader = () => {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const storedTheme = localStorage.getItem("theme");
+
+  useEffect(() => {
+    if (storedTheme === "light" || storedTheme === "dark") {
+      setTheme(storedTheme);
+    }
+  }, [localStorage]);
+
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-black">
+    <div
+      className={`w-full h-screen flex justify-center items-center ${
+        theme === "dark" ? "bg-black" : "bg-white"
+      }`}
+    >
       <TailSpin
         visible={true}
         height="50"
         width="50"
-        color={"#fff"}
+        color={theme === "dark" ? "#fff" : "#000"}
         ariaLabel="tail-spin-loading"
         radius="1"
         wrapperStyle={{}}
