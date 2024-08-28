@@ -141,3 +141,22 @@ export const sortProfilesByDepartment = (
     return indexA - indexB;
   });
 };
+
+export function calculateDaysBetween(
+  dateOfInitiation: string,
+  closureDate: string
+): string {
+  const day1 = new Date(dateOfInitiation);
+  const day2 = new Date(closureDate);
+
+  // Calculate the difference in milliseconds
+  const diffTime: number = Math.abs(day2.getTime() - day1.getTime());
+
+  // Convert milliseconds to days
+  const diffDays: number = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  // Format the number of days with leading zero if needed
+  const formattedDays: string = diffDays < 10 ? `0${diffDays}` : `${diffDays}`;
+
+  return formattedDays;
+}

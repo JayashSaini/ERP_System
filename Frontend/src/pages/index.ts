@@ -13,7 +13,8 @@ import VerifyOTP from "./auth/VerifyOTP";
 // dashboard routes
 import Dashboard from "./Dashboard/Dashboard";
 import UserManagement from "./Dashboard/User Management/UserManagement";
-import ProjectManagement from "./Dashboard/ProjectManagement";
+import ProjectManagement from "./Dashboard/Project Management/ProjectManagement";
+import ProjectList from "./Dashboard/Project Management/ProjectList";
 import Finance from "./Dashboard/Finance";
 import HumanResource from "./Dashboard/HumanResource";
 import Settings from "./Dashboard/Settings";
@@ -38,4 +39,5 @@ export {
   Settings,
   Profile,
   UserProfile,
+  ProjectList,
 };

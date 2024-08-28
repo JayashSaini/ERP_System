@@ -1,14 +1,13 @@
 import { DepartmentsEnum, StatusEnum, UserRolesEnum } from "../constants";
 
-export interface UserAvatar {
+export interface ImageInterface {
   url: string;
-  public_id: string | null;
+  public_id: string;
   _id: string;
 }
-
 export interface UserInterface {
   _id: string;
-  avatar: UserAvatar;
+  avatar: ImageInterface;
   username: string;
   email: string;
   role: (typeof UserRolesEnum)[number];
@@ -52,5 +51,30 @@ export interface ProfileInterface {
   owner?: string;
   role?: (typeof UserRolesEnum)[number];
   status?: (typeof StatusEnum)[number];
-  avatar?: UserAvatar;
+  avatar?: ImageInterface;
+}
+
+export interface ProjectInterface {
+  _id: string; // Project ID
+  srNumber: number; // Serial number or unique identifier
+  projectName: string; // Project name
+  projectHeading: string; // Project heading
+  projectLogo: ImageInterface; // URL or path to the project logo image
+  projectImage: ImageInterface; // URL or path to the project image
+  dateOfInitiation: string; // string of initiation
+  closureDate: string; // Closure date
+  tasks: [
+    {
+      taskName: string;
+      isCompleted?: boolean;
+    }
+  ]; // Array of milestones
+  projectAmount: number; // Total project amount
+  paymentReceived: number; // Amount received
+  paymentDue: number; // Amount due
+  outstandingPayment: number; // Outstanding payment
+  clientName: string; // Client name
+  clientNumber: string; // Client contact number
+  projectManager: string; // Name of the project manager
+  isCompleted: boolean;
 }

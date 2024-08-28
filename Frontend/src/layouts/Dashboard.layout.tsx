@@ -2,7 +2,9 @@ import { Sidebar, SidebarBody, SidebarLink } from "../components/ui/slidebar";
 import {
   IconArrowLeft,
   IconCertificate,
+  IconDeviceImac,
   IconNotebook,
+  IconReportMoney,
   IconSettings,
   IconUserBolt,
 } from "@tabler/icons-react";
@@ -37,12 +39,12 @@ function DashboardLayout() {
     {
       label: "Project Management",
       href: "/dashboard/project-management",
-      icon: <IconUserBolt className=" h-5 w-5 flex-shrink-0" />,
+      icon: <IconDeviceImac className=" h-5 w-5 flex-shrink-0" />,
     },
     {
       label: "Finance",
       href: "/dashboard/finance",
-      icon: <IconUserBolt className=" h-5 w-5 flex-shrink-0" />,
+      icon: <IconReportMoney className=" h-5 w-5 flex-shrink-0" />,
     },
     {
       label: "Settings",
@@ -61,11 +63,11 @@ function DashboardLayout() {
   return (
     <div
       className={cn(
-        "w-full bg-neutral-50 dark:bg-black text-neutral-800 dark:text-neutral-200 min-h-screen rounded-md flex flex-col md:flex-row   flex-1   overflow-hidden"
+        "w-full bg-neutral-100 dark:bg-black text-neutral-800 dark:text-neutral-200 min-h-screen rounded-md flex flex-col md:flex-row   flex-1   overflow-hidden"
       )}
     >
       <Sidebar>
-        <SidebarBody className="justify-between gap-10">
+        <SidebarBody className="justify-between gap-10 ">
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             <Logo />
             <div className="mt-8 flex flex-col gap-2">

@@ -125,6 +125,15 @@ const setProfileStatus = (profileId: string, status: string) => {
   return apiClient.patch(`/profile/status/${profileId}`, { status });
 };
 
+// Project API
+const getAllProjectRequest = (page = 1, limit = 10, query = "all") => {
+  return apiClient.get(`/projects?page=${page}&limit=${limit}&query=${query}`);
+};
+
+const getProjectsBySearchQueryRequest = (query: string) => {
+  return apiClient.get(`/projects/search?query=${query}`);
+};
+
 // Export all the API functions
 export {
   loginUser,
@@ -143,4 +152,6 @@ export {
   getAllProfiles,
   assignUserRole,
   setProfileStatus,
+  getAllProjectRequest,
+  getProjectsBySearchQueryRequest,
 };

@@ -8,6 +8,10 @@ import PublicRoute from "./PublicRoute";
 import ThemeSwitcher from "./ui/ThemeSwitcher";
 import UserList from "./Dashboard/UserList";
 import AccessDenied from "./AccessDenied";
+import PM_Header from "./Dashboard/ProjectManagement/PM_Header";
+import Card from "./Dashboard/ProjectManagement/Card";
+import CardSection from "./Dashboard/ProjectManagement/CardSection";
+import HorizontalCard from "./Dashboard/ProjectManagement/HorizontalCard";
 
 export {
   HomeHeader,
@@ -20,4 +24,8 @@ export {
   ThemeSwitcher,
   UserList,
   AccessDenied,
+  PM_Header,
+  Card,
+  CardSection,
+  HorizontalCard,
 };

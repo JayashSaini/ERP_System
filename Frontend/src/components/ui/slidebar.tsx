@@ -113,7 +113,7 @@ export const SidebarLink = ({
 
   return link?.onClick ? (
     <div
-      className="cursor-pointer dark:text-neutral-200 text-neutral-700 flex items-center justify-start gap-2 group/sidebar py-2 px-1 rounded-sm ease-in-out duration-150 uppercase text-sm "
+      className="cursor-pointer dark:text-neutral-200 text-neutral-700 flex items-center justify-start gap-2 group/sidebar py-2 px-1 rounded-sm ease-in-out duration-150 uppercase text-sm"
       onClick={link.onClick}
     >
       {link.icon}
@@ -124,10 +124,11 @@ export const SidebarLink = ({
       to={link.href}
       className={({ isActive }) =>
         cn(
-          "dark:text-neutral-200 text-neutral-700 flex items-center justify-start gap-2 group/sidebar py-2 px-1  ease-in-out duration-150  rounded-sm uppercase text-sm",
+          "flex items-center justify-start gap-2 group/sidebar py-2 px-1 ease-in-out duration-150 rounded-sm uppercase text-sm",
           {
-            "text-[#118a7e]": isActive, // Apply color when active
-            "hover:text-[#118a7e]": !isActive, // Apply hover color when not active
+            "text-[#17bbab] dark:text-[#17bbab]": isActive, // Apply green color when active in dark mode
+            "hover:text-[#17bbab] dark:hover:text-[#17bbab]": !isActive, // Apply dark theme green color on hover in dark mode
+            "dark:text-neutral-200 text-neutral-700": !isActive, // Default text color when not active
           },
           className
         )
