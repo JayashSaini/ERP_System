@@ -10,18 +10,24 @@ const {
   updateProject,
   addTaskToProject,
   deleteTaskToProject,
-  toggleCompleteTask,
-  toggleProjectCompleted,
   searchProjects,
+  setProjectStatus,
+  updateLogo,
+  setTaskStatus,
+  updateTaskInProject,
+  updateTaskAssignee,
 } = require('../controllers/project.controllers');
 const { validate } = require('../validators/validate');
 const {
   createProjectValidator,
   updateProjectValidator,
   taskValidator,
+  addTaskValidator,
+  updateTaskValidator,
 } = require('../validators/project.validators');
 const {
   mongoIdPathVariableValidator,
+  mongoIdRequestBodyValidator,
 } = require('../validators/mongodb.validators');
 const { UserRolesEnum } = require('../constants');
 const { upload } = require('../middlewares/multer.middlewares');
@@ -39,11 +45,7 @@ router
         maxCount: 1,
       },
     ]),
-    verifyPermission([
-      UserRolesEnum.PROJECT_MANAGER,
-      UserRolesEnum.ADMIN,
-      UserRolesEnum.TEAM_LEADER,
-    ]),
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
     createProjectValidator(),
     validate,
     createProject
@@ -55,21 +57,7 @@ router
   .route('/:projectId')
   .get(mongoIdPathVariableValidator('projectId'), validate, getProjectById)
   .patch(
-    upload.fields([
-      {
-        name: 'projectImage',
-        maxCount: 1,
-      },
-      {
-        name: 'projectLogo',
-        maxCount: 1,
-      },
-    ]),
-    verifyPermission([
-      UserRolesEnum.PROJECT_MANAGER,
-      UserRolesEnum.ADMIN,
-      UserRolesEnum.TEAM_LEADER,
-    ]),
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
     mongoIdPathVariableValidator('projectId'),
     updateProjectValidator(),
     validate,
@@ -77,38 +65,48 @@ router
   );
 
 router
+  .route('/logo/:projectId')
+  .patch(
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
+    upload.single('projectLogo'),
+    mongoIdPathVariableValidator('projectId'),
+    validate,
+    updateLogo
+  );
+
+router
   .route('/task/:projectId')
   .post(
-    verifyPermission([
-      UserRolesEnum.PROJECT_MANAGER,
-      UserRolesEnum.ADMIN,
-      UserRolesEnum.TEAM_LEADER,
-    ]),
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
     mongoIdPathVariableValidator('projectId'),
-    taskValidator(),
+    mongoIdRequestBodyValidator('assignee'),
+    addTaskValidator(),
     validate,
     addTaskToProject
   );
 
 router
   .route('/task/:projectId/:taskId')
+  .post(
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
+    mongoIdPathVariableValidator('projectId'),
+    mongoIdPathVariableValidator('taskId'),
+    updateTaskValidator(),
+    validate,
+    updateTaskInProject
+  );
+
+router
+  .route('/task/:projectId/:taskId')
   .patch(
-    verifyPermission([
-      UserRolesEnum.PROJECT_MANAGER,
-      UserRolesEnum.ADMIN,
-      UserRolesEnum.TEAM_LEADER,
-    ]),
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
     mongoIdPathVariableValidator('projectId'),
     mongoIdPathVariableValidator('taskId'),
     validate,
-    toggleCompleteTask
+    setTaskStatus
   )
   .delete(
-    verifyPermission([
-      UserRolesEnum.PROJECT_MANAGER,
-      UserRolesEnum.ADMIN,
-      UserRolesEnum.TEAM_LEADER,
-    ]),
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
     mongoIdPathVariableValidator('projectId'),
     mongoIdPathVariableValidator('taskId'),
     validate,
@@ -116,16 +114,21 @@ router
   );
 
 router
-  .route('/completed/:projectId')
+  .route('/task/assign/:projectId/:taskId')
   .patch(
-    verifyPermission([
-      UserRolesEnum.PROJECT_MANAGER,
-      UserRolesEnum.ADMIN,
-      UserRolesEnum.TEAM_LEADER,
-    ]),
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
+    mongoIdPathVariableValidator('projectId'),
+    mongoIdPathVariableValidator('taskId'),
+    validate,
+    updateTaskAssignee
+  );
+router
+  .route('/status/:projectId')
+  .patch(
+    verifyPermission([UserRolesEnum.PROJECT_MANAGER, UserRolesEnum.ADMIN]),
     mongoIdPathVariableValidator('projectId'),
     validate,
-    toggleProjectCompleted
+    setProjectStatus
   );
 
 module.exports = router;

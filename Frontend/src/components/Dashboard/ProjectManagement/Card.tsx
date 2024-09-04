@@ -13,7 +13,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
     <div
       className="sm:w-[320px] w-[270px] dark:bg-[#2222228f] bg-neutral-200 sm:h-[330px] h-[290px] inline-block border-[1px] dark:border-neutral-700 border-neutral-300 px-4 py-7 rounded-md cursor-pointer select-none "
       onClick={() => {
-        navigate("/dashboard/projects/" + data?._id);
+        navigate("/dashboard/project-management/" + data?._id);
       }}
     >
       <div className="w-full sm:h-52 h-40 overflow-hidden cursor-pointer rounded-md">

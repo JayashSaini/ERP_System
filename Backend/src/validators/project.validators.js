@@ -1,13 +1,8 @@
 const { body } = require('express-validator');
+const { AvailableProjectStatus } = require('../constants');
 
 const createProjectValidator = () => {
   return [
-    body('srNumber')
-      .isNumeric()
-      .withMessage('Serial number must be a number')
-      .notEmpty()
-      .withMessage('Serial number is required'),
-
     body('projectName')
       .trim()
       .notEmpty()
@@ -22,34 +17,17 @@ const createProjectValidator = () => {
       .isString()
       .withMessage('Project heading must be a string'),
 
-    body('dateOfInitiation')
-      .isISO8601()
-      .withMessage('Date of initiation must be a valid date')
-      .toDate(),
-
-    body('closureDate')
-      .optional()
-      .isISO8601()
-      .withMessage('Closure date must be a valid date')
-      .toDate(),
-
-    body('tasks').optional().isArray().withMessage('Tasks must be an array'),
-
-    body('projectAmount')
-      .isNumeric()
-      .withMessage('Project amount must be a number')
+    body('projectManager')
+      .trim()
       .notEmpty()
-      .withMessage('Project amount is required'),
+      .withMessage('Project manager is required')
+      .isString()
+      .withMessage('Project manager must be a string'),
   ];
 };
 
 const updateProjectValidator = () => {
   return [
-    body('srNumber')
-      .optional()
-      .isNumeric()
-      .withMessage('Serial number must be a number'),
-
     body('projectName')
       .optional()
       .trim()
@@ -114,10 +92,10 @@ const updateProjectValidator = () => {
       .isString()
       .withMessage('Project manager must be a string'),
 
-    body('isCompleted')
+    body('projectStatus')
       .optional()
-      .isBoolean()
-      .withMessage('IsCompleted must be a boolean'),
+      .isIn(AvailableProjectStatus)
+      .withMessage('Invalid project status'),
   ];
 };
 
@@ -137,8 +115,46 @@ const taskValidator = () => {
   ];
 };
 
+const addTaskValidator = () => {
+  return [
+    body('taskName')
+      .trim()
+      .notEmpty()
+      .withMessage('Task name is required')
+      .isString()
+      .withMessage('Task name must be a string'),
+    body('taskDescription')
+      .trim()
+      .notEmpty()
+      .withMessage('Task name is required')
+      .isString()
+      .withMessage('Task name must be a string'),
+  ];
+};
+
+const updateTaskValidator = () => {
+  return [
+    body('taskName')
+      .optional()
+      .trim()
+      .notEmpty()
+      .withMessage('Task name is required')
+      .isString()
+      .withMessage('Task name must be a string'),
+    body('taskDescription')
+      .optional()
+      .trim()
+      .notEmpty()
+      .withMessage('Task name is required')
+      .isString()
+      .withMessage('Task name must be a string'),
+  ];
+};
+
 module.exports = {
   createProjectValidator,
   updateProjectValidator,
   taskValidator,
+  addTaskValidator,
+  updateTaskValidator,
 };

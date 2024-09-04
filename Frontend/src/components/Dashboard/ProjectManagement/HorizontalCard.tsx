@@ -27,7 +27,7 @@ const HorizontalCard: React.FC<HorizontalCardProps> = ({ data }) => {
       <div
         className="w-full flex px-5 py-6 gap-2 cursor-pointer dark:bg-[#2222228f] bg-neutral-200 duration-100 ease-linear select-none rounded-md"
         onClick={() => {
-          navigate("/dashboard/projects/" + data?._id);
+          navigate("/dashboard/project-management/" + data?._id);
         }}
       >
         <div className="w-[30%] sm:h-[180px] h-[120px] overflow-hidden ">

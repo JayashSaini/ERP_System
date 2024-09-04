@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { requestHandler } from "../../util";
 import {
   getProfile,
@@ -226,7 +226,7 @@ const Profile = () => {
             </label>
             <select
               {...register("gender")}
-              className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-slate-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
+              className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-neutral-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
               required={true}
             >
               <option
@@ -300,7 +300,7 @@ const Profile = () => {
               </label>
               <select
                 {...register("department")}
-                className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-slate-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
+                className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-neutral-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
                 required={true}
               >
                 {DepartmentsEnum.map((department) => (
@@ -321,7 +321,7 @@ const Profile = () => {
               </label>
               <select
                 {...register("employeeStatus")}
-                className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-slate-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
+                className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-neutral-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
                 required={true}
               >
                 <option
@@ -353,7 +353,7 @@ const Profile = () => {
               </label>
               <select
                 {...register("workLocation")}
-                className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-slate-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
+                className="w-full bg-transparent hover:dark:border-[#fff]  border-2 border-neutral-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base  cursor-pointer transition"
                 required={true}
               >
                 <option

@@ -12,6 +12,11 @@ import PM_Header from "./Dashboard/ProjectManagement/PM_Header";
 import Card from "./Dashboard/ProjectManagement/Card";
 import CardSection from "./Dashboard/ProjectManagement/CardSection";
 import HorizontalCard from "./Dashboard/ProjectManagement/HorizontalCard";
+import DonutChart from "./Dashboard/ProjectManagement/DonutChat";
+import SecondaryInput from "./SecondaryInput";
+import TaskManager from "./Dashboard/ProjectManagement/TaskManager";
+import ProjectInfo from "./Dashboard/ProjectManagement/ProjectInfo";
+import AddProject from "./Dashboard/ProjectManagement/AddProject";
 
 export {
   HomeHeader,
@@ -28,4 +33,9 @@ export {
   Card,
   CardSection,
   HorizontalCard,
+  DonutChart,
+  SecondaryInput,
+  TaskManager,
+  ProjectInfo,
+  AddProject,
 };

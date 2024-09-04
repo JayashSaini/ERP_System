@@ -90,6 +90,15 @@ export const formatMongoDate = (createdAt?: string): string => {
   return `${formattedDate}`;
 };
 
+export function formatMongoDateToInput(mongoDate: string) {
+  const date = new Date(mongoDate); // Create a Date object from the MongoDB date
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based, so add 1
+  const day = String(date.getDate()).padStart(2, "0"); // Pad single digits with a leading zero
+
+  return `${year}-${month}-${day}`;
+}
+
 const roleOrder: string[] = [
   "ADMIN",
   "HR",

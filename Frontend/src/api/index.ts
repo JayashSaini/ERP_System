@@ -31,10 +31,6 @@ apiClient.interceptors.response.use(
   },
   async function (error) {
     // Handle errors globally
-    if (error.response.status == 403) {
-      LocalStorage.clear();
-      window.location.href = "/auth/login";
-    }
     if (error.response.status == 401) {
       try {
         const response = await axios.post("/api/v1/users/refresh-token");
@@ -103,8 +99,17 @@ const updateAvatar = (data: any) => {
 };
 
 const assignUserRole = (userId: string, role: string) => {
-  return apiClient.patch("users/assign-role/" + userId, { role });
+  return apiClient.patch("/users/assign-role/" + userId, { role });
 };
+
+const getAllUsernamesRequest = () => {
+  return apiClient.get("/users/usernames");
+};
+
+const setProjectStatusRequest = (projectId: string, projectStatus: string) => {
+  return apiClient.patch(`/projects/status/` + projectId, { projectStatus });
+};
+
 // profile routes
 
 const getAllProfiles = () => {
@@ -126,12 +131,60 @@ const setProfileStatus = (profileId: string, status: string) => {
 };
 
 // Project API
+
+const updateProjectRequest = (projectId: string, data: any) => {
+  return apiClient.patch(`/projects/` + projectId, data);
+};
+
+const addProjectRequest = (data: any) => {
+  return apiClient.post(`/projects`, data);
+};
+
+const addTaskRequest = (projectId: string, data: any) => {
+  return apiClient.post(`/projects/task/` + projectId, data);
+};
+
+const updateTaskRequest = (projectId: string, taskId: string, data: any) => {
+  return apiClient.post(`/projects/task/${projectId}/${taskId}`, data);
+};
+
+const updateAssigneeToTaskRequest = (
+  projectId: string,
+  taskId: string,
+  assignee: any
+) => {
+  return apiClient.patch(`/projects/task/assign/${projectId}/${taskId}`, {
+    assignee,
+  });
+};
+
+const deleteTaskRequest = (projectId: string, taskId: string) => {
+  return apiClient.delete(`/projects/task/${projectId}/${taskId}`);
+};
+
+const setTaskStatusRequest = (
+  projectId: string,
+  taskId: string,
+  taskStatus: string
+) => {
+  return apiClient.patch(`/projects/task/${projectId}/${taskId}`, {
+    taskStatus,
+  });
+};
+
+const updateLogoRequest = (projectId: string, data: any) => {
+  return apiClient.patch(`/projects/logo/` + projectId, data);
+};
 const getAllProjectRequest = (page = 1, limit = 10, query = "all") => {
   return apiClient.get(`/projects?page=${page}&limit=${limit}&query=${query}`);
 };
 
 const getProjectsBySearchQueryRequest = (query: string) => {
   return apiClient.get(`/projects/search?query=${query}`);
+};
+
+const getProjectByIdRequest = (projectId: string) => {
+  return apiClient.get(`/projects/` + projectId);
 };
 
 // Export all the API functions
@@ -154,4 +207,15 @@ export {
   setProfileStatus,
   getAllProjectRequest,
   getProjectsBySearchQueryRequest,
+  getProjectByIdRequest,
+  updateProjectRequest,
+  updateLogoRequest,
+  addProjectRequest,
+  getAllUsernamesRequest,
+  addTaskRequest,
+  deleteTaskRequest,
+  updateTaskRequest,
+  setProjectStatusRequest,
+  setTaskStatusRequest,
+  updateAssigneeToTaskRequest,
 };

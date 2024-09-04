@@ -1,4 +1,9 @@
-import { DepartmentsEnum, StatusEnum, UserRolesEnum } from "../constants";
+import {
+  DepartmentsEnum,
+  ProjectStatusEnum,
+  StatusEnum,
+  UserRolesEnum,
+} from "../constants";
 
 export interface ImageInterface {
   url: string;
@@ -53,7 +58,22 @@ export interface ProfileInterface {
   status?: (typeof StatusEnum)[number];
   avatar?: ImageInterface;
 }
+export interface AssigneeInterface {
+  _id: string;
+  username: string;
+  email: string;
+  avatar: ImageInterface;
+}
 
+export interface TaskInterface {
+  _id: string;
+  taskName: string;
+  taskDescription: string;
+  assignee: AssigneeInterface;
+  taskStatus?: "IN_PROGRESS" | "COMPLETED" | "ON_HOLD" | "PENDING";
+  createdAt: string;
+  updatedAt: string;
+}
 export interface ProjectInterface {
   _id: string; // Project ID
   srNumber: number; // Serial number or unique identifier
@@ -63,12 +83,7 @@ export interface ProjectInterface {
   projectImage: ImageInterface; // URL or path to the project image
   dateOfInitiation: string; // string of initiation
   closureDate: string; // Closure date
-  tasks: [
-    {
-      taskName: string;
-      isCompleted?: boolean;
-    }
-  ]; // Array of milestones
+  tasks: TaskInterface[]; // Array of milestones
   projectAmount: number; // Total project amount
   paymentReceived: number; // Amount received
   paymentDue: number; // Amount due
@@ -76,5 +91,12 @@ export interface ProjectInterface {
   clientName: string; // Client name
   clientNumber: string; // Client contact number
   projectManager: string; // Name of the project manager
-  isCompleted: boolean;
+  projectStatus: (typeof ProjectStatusEnum)[number];
+}
+
+export interface InputList {
+  label: string;
+  value?: string | number;
+  type: "text" | "number" | "date" | "email" | "password"; // Example of specific types
+  apiName: string; // If there are specific API names, you can use string literals
 }

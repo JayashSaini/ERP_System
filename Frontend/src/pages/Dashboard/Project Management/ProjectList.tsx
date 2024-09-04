@@ -56,7 +56,7 @@ const ProjectList: React.FC = () => {
             to="/dashboard/project-management"
             className="custom-color hover:underline"
           >
-            Learn
+            Dashboard
           </Link>{" "}
           / {label}
         </p>

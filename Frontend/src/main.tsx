@@ -11,6 +11,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <App />
     </Provider>
-    <Toaster position="top-center" duration={2500} />
+    <Toaster position="bottom-right" duration={2500} theme={"dark"} />
   </BrowserRouter>
 );

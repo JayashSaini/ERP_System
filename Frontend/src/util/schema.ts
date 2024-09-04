@@ -136,3 +136,48 @@ export const profileSchema = yup.object().shape({
     )
     .notRequired(),
 });
+
+export const addProjectSchema = yup.object().shape({
+  projectName: yup
+    .string()
+    .trim()
+    .required("Project Name is required")
+    .min(1, "Project Name cannot be empty"),
+
+  projectHeading: yup
+    .string()
+    .trim()
+    .required("Heading is required")
+    .min(1, "Heading cannot be empty"),
+
+  projectManager: yup
+    .string()
+    .trim()
+    .required("Project Manager is required")
+    .min(1, "Project Manager cannot be empty"),
+
+  projectImage: yup
+    .mixed<File>()
+    .nullable()
+    .test(
+      "fileSize",
+      "File size is too large",
+      (value) => !value || value.size <= 5 * 1024 * 1024 // 5MB max
+    )
+    .test(
+      "fileType",
+      "Unsupported file type",
+      (value) => !value || ["image/jpeg", "image/png"].includes(value.type) // Allowed types
+    ),
+});
+
+export const addProjectTaskSchema = yup
+  .object({
+    taskName: yup.string().trim().required("Task Name is required"),
+    taskDescription: yup
+      .string()
+      .trim()
+      .required("Task Description is required"),
+    assignee: yup.string().trim().required("Assignee is required"),
+  })
+  .required();

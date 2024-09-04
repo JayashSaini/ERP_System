@@ -13,6 +13,7 @@ const {
   userSelf,
   updateAvatar,
   assignRole,
+  getAllUserNames,
 } = require('../../controllers/auth/user.controllers.js');
 const {
   userRegisterValidator,
@@ -59,6 +60,7 @@ router.route('/update-avatar').patch(
   updateAvatar
 );
 
+router.route('/usernames').get(verifyJWT, getAllUserNames);
 // assign roles
 router
   .route('/assign-role/:userId')

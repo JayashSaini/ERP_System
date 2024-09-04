@@ -9,13 +9,13 @@ import { Loader } from "../../../components";
 import { toast } from "sonner";
 import { getAllProjectRequest } from "../../../api";
 import { requestHandler } from "../../../util";
-
 const ProjectManagement = () => {
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState<ProjectInterface[]>([]);
   const [ongoingProjects, setOngoingProjects] = useState<ProjectInterface[]>(
     []
   );
+
   useEffect(() => {
     getProjects();
   }, []);
@@ -76,7 +76,7 @@ const ProjectManagement = () => {
             <HorizontalCard data={ongoingProjects[0]} />
           </div>
         )}
-        {ongoingProjects.length > 0 && (
+        {projects.length > 0 && (
           <CardSection label="Projects" Projects={projects} />
         )}
       </div>

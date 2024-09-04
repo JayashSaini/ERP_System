@@ -9,11 +9,11 @@ const Loader = () => {
     if (storedTheme === "light" || storedTheme === "dark") {
       setTheme(storedTheme);
     }
-  }, [localStorage]);
+  }, [storedTheme]);
 
   return (
     <div
-      className={`w-full h-screen flex justify-center items-center ${
+      className={`fixed top-0 left-0 w-screen h-screen z-50 flex justify-center items-center ${
         theme === "dark" ? "bg-black" : "bg-white"
       }`}
     >

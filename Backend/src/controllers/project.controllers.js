@@ -1,11 +1,17 @@
 const { asyncHandler } = require('../utils/asyncHandler');
 const Project = require('../models/project.models.js');
+const User = require('../models/auth/user.models.js');
 const { ApiResponse } = require('../utils/ApiResponse.js');
 const { ApiError } = require('../utils/ApiError.js');
 const {
   uploadOnCloudinary,
   deleteImageOnCloudinary,
 } = require('../utils/cloudinary.js');
+const {
+  ProjectStatusEnum,
+  AvailableProjectStatus,
+  AvailableTaskStatus,
+} = require('../constants.js');
 
 const getAllProjects = asyncHandler(async (req, res) => {
   // Optional query parameters for pagination and filtering
@@ -15,7 +21,9 @@ const getAllProjects = asyncHandler(async (req, res) => {
 
   if (query === 'ongoing-projects') {
     // Retrieve ongoing projects with sorting
-    projects = await Project.find({ isCompleted: false })
+    projects = await Project.find({
+      projectStatus: ProjectStatusEnum.IN_PROGRESS,
+    })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(Number(limit));
@@ -56,19 +64,10 @@ const getProjectById = asyncHandler(async (req, res) => {
 
 const createProject = asyncHandler(async (req, res) => {
   // Destructure all the necessary fields from req.body
-  const {
-    srNumber,
-    projectName,
-    projectHeading,
-
-    dateOfInitiation,
-    closureDate,
-    tasks,
-    projectAmount,
-  } = req.body;
+  const { projectName, projectHeading, projectManager } = req.body;
 
   // Upload project image to Cloudinary
-  const projectImageLocalPath = req.files.projectImage[0].path;
+  const projectImageLocalPath = req?.files?.projectImage[0]?.path;
   if (!projectImageLocalPath) {
     throw new ApiError(400, 'Project image is required');
   }
@@ -76,7 +75,6 @@ const createProject = asyncHandler(async (req, res) => {
 
   // Create a new project using the provided data
   const newProject = new Project({
-    srNumber,
     projectName,
     projectHeading,
 
@@ -84,10 +82,8 @@ const createProject = asyncHandler(async (req, res) => {
       url: projectImageInfo.url,
       public_id: projectImageInfo.public_id,
     },
-    dateOfInitiation,
-    closureDate,
-    tasks,
-    projectAmount,
+
+    projectManager,
   });
 
   // Save the new project to the database
@@ -102,7 +98,6 @@ const createProject = asyncHandler(async (req, res) => {
 const updateProject = asyncHandler(async (req, res) => {
   const { projectId } = req.params;
   const {
-    srNumber,
     projectName,
     projectHeading,
     dateOfInitiation,
@@ -115,7 +110,7 @@ const updateProject = asyncHandler(async (req, res) => {
     clientName,
     clientNumber,
     projectManager,
-    isCompleted,
+    projectStatus,
   } = req.body;
 
   // Find the project by ID
@@ -124,34 +119,7 @@ const updateProject = asyncHandler(async (req, res) => {
     throw new ApiError(404, 'Project not found');
   }
 
-  // Update project fields if provided
-  const projectImageLocalPath = req.files?.projectImage[0]?.path;
-  if (projectImageLocalPath) {
-    const projectImageInfo = await uploadOnCloudinary(projectImageLocalPath);
-    if (project.projectImage?.public_id)
-      await deleteImageOnCloudinary(project.projectImage?.public_id);
-
-    project.projectImage = {
-      url: projectImageInfo.url,
-      public_id: projectImageInfo.public_id,
-    };
-  }
-
-  const projectLogoLocalPath = req.files?.projectLogo[0]?.path;
-  if (projectLogoLocalPath) {
-    const projectLogoInfo = await uploadOnCloudinary(projectLogoLocalPath);
-
-    if (project.projectLogo?.public_id)
-      await deleteImageOnCloudinary(project.projectLogo?.public_id);
-
-    project.projectLogo = {
-      url: projectLogoInfo.url,
-      public_id: projectLogoInfo.public_id,
-    };
-  }
-
   // Update the other fields
-  project.srNumber = srNumber ?? project.srNumber;
   project.projectName = projectName ?? project.projectName;
   project.projectHeading = projectHeading ?? project.projectHeading;
   project.dateOfInitiation = dateOfInitiation ?? project.dateOfInitiation;
@@ -164,7 +132,7 @@ const updateProject = asyncHandler(async (req, res) => {
   project.clientName = clientName ?? project.clientName;
   project.clientNumber = clientNumber ?? project.clientNumber;
   project.projectManager = projectManager ?? project.projectManager;
-  project.isCompleted = isCompleted ?? project.isCompleted;
+  project.projectStatus = projectStatus ?? project.projectStatus;
 
   // Save the updated project
   await project.save();
@@ -177,12 +145,7 @@ const updateProject = asyncHandler(async (req, res) => {
 
 const addTaskToProject = asyncHandler(async (req, res) => {
   const { projectId } = req.params;
-  const { taskName, isCompleted } = req.body;
-
-  // Validate required fields
-  if (!taskName) {
-    throw new ApiError(400, 'Task name is required');
-  }
+  const { taskName, taskDescription, assignee } = req.body;
 
   // Find the project by ID
   const project = await Project.findById(projectId);
@@ -190,10 +153,29 @@ const addTaskToProject = asyncHandler(async (req, res) => {
     throw new ApiError(404, 'Project not found');
   }
 
+  const user = await User.findById(assignee);
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  // Check if the project status is 'IN_PROGRESS'
+  if (project.projectStatus !== 'IN_PROGRESS') {
+    throw new ApiError(400, 'Project status must be IN_PROGRESS to add tasks');
+  }
+
   // Create the new task
   const newTask = {
     taskName,
-    isCompleted: isCompleted ?? false,
+    taskDescription,
+    assignee: {
+      _id: user._id,
+      username: user.username,
+      avatar: {
+        url: user.avatar.url,
+        public_id: user.avatar.public_id,
+      },
+      email: user.email,
+    },
   };
 
   // Add the task to the project's tasks array
@@ -206,6 +188,86 @@ const addTaskToProject = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, project, 'Task added successfully'));
+});
+
+const updateTaskInProject = asyncHandler(async (req, res) => {
+  const { projectId, taskId } = req.params;
+  const { taskName, taskDescription } = req.body;
+
+  // Find the project by ID
+  const project = await Project.findById(projectId);
+  if (!project) {
+    throw new ApiError(404, 'Project not found');
+  }
+
+  // Find the task within the project's tasks array
+  const task = project.tasks.id(taskId);
+  if (!task) {
+    throw new ApiError(404, 'Task not found');
+  }
+
+  // Update the task name if provided
+  if (taskName) {
+    task.taskName = taskName;
+  }
+
+  // Update the task description if provided
+  if (taskDescription) {
+    task.taskDescription = taskDescription;
+  }
+  // Save the updated project
+  await project.save();
+
+  // Send a success response
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { task }, 'Task updated successfully'));
+});
+
+const updateTaskAssignee = asyncHandler(async (req, res) => {
+  const { projectId, taskId } = req.params;
+  const { assignee } = req.body;
+
+  // Find the project by ID
+  const project = await Project.findById(projectId);
+  if (!project) {
+    throw new ApiError(404, 'Project not found');
+  }
+
+  // Find the task within the project's tasks array
+  const task = project.tasks.id(taskId);
+  if (!task) {
+    throw new ApiError(404, 'Task not found');
+  }
+
+  // Update the assignee if provided
+  if (assignee) {
+    const user = await User.findById(assignee);
+    if (!user) {
+      throw new ApiError(404, 'User not found');
+    }
+
+    task.assignee = {
+      _id: user._id,
+      username: user.username,
+      avatar: user.avatar,
+      email: user.email,
+    };
+  }
+
+  // Save the updated project
+  await project.save();
+
+  // Send a success response
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { assignee: task.assignee },
+        'Task Assignee Update Successfully'
+      )
+    );
 });
 
 const deleteTaskToProject = asyncHandler(async (req, res) => {
@@ -237,6 +299,37 @@ const deleteTaskToProject = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, project, 'Task deleted successfully'));
 });
 
+const setTaskStatus = asyncHandler(async (req, res) => {
+  const { projectId, taskId } = req.params;
+  const { taskStatus } = req.body;
+
+  if (!projectId || !taskId) {
+    throw new ApiError(400, 'Project ID and Task ID are required');
+  }
+
+  // Validate required fields
+  if (!AvailableTaskStatus.includes(taskStatus)) {
+    throw new ApiError(400, 'Invalid task status');
+  }
+
+  const project = await Project.findById(projectId);
+  if (!project) {
+    throw new ApiError(404, 'Project not found');
+  }
+
+  const taskIndex = project.tasks.findIndex(
+    (task) => task._id.toString() === taskId
+  );
+
+  project.tasks[taskIndex].taskStatus = taskStatus;
+
+  await project.save();
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { taskStatus }, 'Task status updated'));
+});
+
 const searchProjects = asyncHandler(async (req, res) => {
   const { query } = req.query;
 
@@ -258,44 +351,52 @@ const searchProjects = asyncHandler(async (req, res) => {
     );
 });
 
-const toggleCompleteTask = asyncHandler(async (req, res) => {
-  const { projectId, taskId } = req.params;
-
-  if (!projectId || !taskId) {
-    throw new ApiError(400, 'Project ID and Task ID are required');
-  }
-
-  const task = await Task.findById(taskId);
-  if (!task) {
-    throw new ApiError(404, 'Task not found');
-  }
-
-  task.completed = !task.completed;
-  await task.save();
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, task, 'Task completion status updated'));
-});
-
-const toggleProjectCompleted = asyncHandler(async (req, res) => {
+const setProjectStatus = asyncHandler(async (req, res) => {
   const { projectId } = req.params;
+  const { projectStatus } = req.body;
 
   if (!projectId) {
     throw new ApiError(400, 'Project ID is required');
   }
 
+  if (!AvailableProjectStatus.includes(projectStatus)) {
+    throw new ApiError(400, 'Invalid project status');
+  }
   const project = await Project.findById(projectId);
+
   if (!project) {
     throw new ApiError(404, 'Project not found');
   }
 
-  project.isCompleted = !project?.isCompleted || false;
+  project.projectStatus = projectStatus;
   await project.save();
 
   return res
     .status(200)
-    .json(new ApiResponse(200, project, 'Project marked as completed'));
+    .json(new ApiResponse(200, project, 'Project Status Updated'));
+});
+
+const updateLogo = asyncHandler(async (req, res) => {
+  const { projectId } = req.params;
+
+  const project = await Project.findById(projectId);
+
+  const projectLogoLocalPath = req.file?.path;
+  if (projectLogoLocalPath) {
+    const projectLogoInfo = await uploadOnCloudinary(projectLogoLocalPath);
+
+    if (project.projectLogo?.public_id)
+      await deleteImageOnCloudinary(project.projectLogo?.public_id);
+
+    project.projectLogo = {
+      url: projectLogoInfo.url,
+      public_id: projectLogoInfo.public_id,
+    };
+  }
+  await project.save();
+  res
+    .status(200)
+    .json(new ApiResponse(200, project, 'Logo updated successfully'));
 });
 
 module.exports = {
@@ -306,6 +407,9 @@ module.exports = {
   addTaskToProject,
   deleteTaskToProject,
   searchProjects,
-  toggleCompleteTask,
-  toggleProjectCompleted,
+  setTaskStatus,
+  setProjectStatus,
+  updateLogo,
+  updateTaskInProject,
+  updateTaskAssignee,
 };

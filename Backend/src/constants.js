@@ -52,10 +52,25 @@ const StatusEnum = {
   RESIGNED: 'RESIGNED',
 };
 
+const ProjectStatusEnum = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  ON_HOLD: 'ON_HOLD',
+  CANCELLED: 'CANCELLED',
+};
+
+const TaskStatusEnum = {
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  PENDING: 'PENDING',
+};
+
 const AvailableEmployeeStatus = Object.values(EmployeeStatusEnum);
 const AvailableEmployeeSWorkLocation = Object.values(EmployeeWorkLocationEnum);
 const AvailableDepartments = Object.values(DepartmentEnum);
 const AvailableStatus = Object.values(StatusEnum);
+const AvailableProjectStatus = Object.values(ProjectStatusEnum);
+const AvailableTaskStatus = Object.values(TaskStatusEnum);
 
 module.exports = {
   DB_NAME,
@@ -73,4 +88,8 @@ module.exports = {
   AvailableDepartments,
   StatusEnum,
   AvailableStatus,
+  ProjectStatusEnum,
+  AvailableProjectStatus,
+  AvailableTaskStatus,
+  TaskStatusEnum,
 };

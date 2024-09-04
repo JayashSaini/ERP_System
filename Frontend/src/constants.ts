@@ -37,8 +37,23 @@ export const AvailableStatus = {
   RESIGNED: "RESIGNED",
 } as const;
 
+export const AvailableTaskStatus = {
+  IN_PROGRESS: "IN_PROGRESS",
+  COMPLETED: "COMPLETED",
+  PENDING: "PENDING",
+};
+
+export const AvailableProjectStatus = {
+  IN_PROGRESS: "IN_PROGRESS",
+  COMPLETED: "COMPLETED",
+  ON_HOLD: "ON_HOLD",
+  CANCELLED: "CANCELLED",
+} as const;
+
 export const UserRolesEnum = Object.values(AvailableUserRoles);
 export const UserRolesDropdownEnum = Object.values(AvailableUserRolesDropDown);
 export const StatusEnum = Object.values(AvailableStatus);
+export const ProjectStatusEnum = Object.values(AvailableProjectStatus);
+export const TaskStatusEnum = Object.values(AvailableTaskStatus);
 
 export const DepartmentsEnum = Object.values(Departments);

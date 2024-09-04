@@ -515,6 +515,20 @@ const assignRole = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedUser, 'User role updated successfully!'));
 });
 
+const getAllUserNames = asyncHandler(async (req, res) => {
+  // Filter users to exclude those with roles 'USER' and 'CLIENT_SUPPORT'
+  const users = await User.find(
+    {
+      role: { $nin: [UserRolesEnum.USER, UserRolesEnum.CLIENT_SUPPORT] },
+    },
+    'username _id' // Include 'username' and '_id' fields
+  ).select('-password'); // Exclude 'password' field
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, users, 'All user names fetched successfully!'));
+});
+
 module.exports = {
   userRegister,
   userLogin,
@@ -529,4 +543,5 @@ module.exports = {
   generateAccessAndRefreshTokens,
   updateAvatar,
   assignRole,
+  getAllUserNames,
 };

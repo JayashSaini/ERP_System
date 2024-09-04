@@ -20,6 +20,7 @@ import HumanResource from "./Dashboard/HumanResource";
 import Settings from "./Dashboard/Settings";
 import Profile from "./Dashboard/Profile";
 import UserProfile from "./Dashboard/User Management/UserProfile";
+import ProjectDetails from "./Dashboard/Project Management/ProjectDetails";
 
 export {
   Home,
@@ -40,4 +41,5 @@ export {
   Profile,
   UserProfile,
   ProjectList,
+  ProjectDetails,
 };
