@@ -21,6 +21,7 @@ import Settings from "./Dashboard/Settings";
 import Profile from "./Dashboard/Profile";
 import UserProfile from "./Dashboard/User Management/UserProfile";
 import ProjectDetails from "./Dashboard/Project Management/ProjectDetails";
+import Inquiries from "./Dashboard/Inquiries";
 
 export {
   Home,
@@ -42,4 +43,5 @@ export {
   UserProfile,
   ProjectList,
   ProjectDetails,
+  Inquiries,
 };

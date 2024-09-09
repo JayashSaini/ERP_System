@@ -149,7 +149,7 @@ const Model: React.FC<ModelProps> = ({ open, handleClose }) => {
                 />
                 <label
                   htmlFor="project-image-input"
-                  className="cursor-pointer border-[1px] dark:border-white border-black text-white py-2 px-4 rounded-md text-center"
+                  className="bg-transparent  border-2 duration-200 ease-in font-semibold flex items-center justify-center disabled:bg-[#353535] disabled:border-[#d6d6d64f] disabled:text-gray-500 px-6 py-3 rounded-md  border-[rgb(17,138,126)]"
                 >
                   {projectImage
                     ? `Selected: ${projectImage.name}`

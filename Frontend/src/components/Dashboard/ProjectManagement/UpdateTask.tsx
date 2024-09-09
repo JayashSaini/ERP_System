@@ -72,7 +72,11 @@ const Model: React.FC<ModelProps> = ({ data }) => {
   const onSubmit: SubmitHandler<FormData> = async (payload) => {
     requestHandler(
       async () =>
-        await updateTaskRequest(project?._id, taskToUpdate?._id, payload),
+        await updateTaskRequest(
+          project?._id || "",
+          taskToUpdate?._id || "",
+          payload
+        ),
       setIsLoading,
       ({ data: project }) => {
         dispatch(

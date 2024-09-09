@@ -227,6 +227,10 @@
   background: linear-gradient(135deg, #118a7e, #0c4b5c);
 }
 
+.custom-hero-bg2 {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
 /* end project management  */
 
 /* Custom scrollbar styles */

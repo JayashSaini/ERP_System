@@ -17,6 +17,7 @@ import SecondaryInput from "./SecondaryInput";
 import TaskManager from "./Dashboard/ProjectManagement/TaskManager";
 import ProjectInfo from "./Dashboard/ProjectManagement/ProjectInfo";
 import AddProject from "./Dashboard/ProjectManagement/AddProject";
+import InquiryBox from "./Dashboard/Inquirybox";
 
 export {
   HomeHeader,
@@ -38,4 +39,5 @@ export {
   TaskManager,
   ProjectInfo,
   AddProject,
+  InquiryBox,
 };

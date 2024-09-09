@@ -14,6 +14,7 @@ const startApp = () => {
   const userRouter = require('./routes/auth/user.routes.js');
   const profileRouter = require('./routes/profile.routes.js');
   const projectRouter = require('./routes/project.routes.js');
+  const enquiryRouter = require('./routes/enquiry.routes.js');
 
   app.use(
     cors({
@@ -37,6 +38,7 @@ const startApp = () => {
   app.use('/api/v1/users', userRouter);
   app.use('/api/v1/profile', profileRouter);
   app.use('/api/v1/projects', projectRouter);
+  app.use('/api/v1/inquiries', enquiryRouter);
 
   // if endpoint not found
   app.use((_, __, next) => {

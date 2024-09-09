@@ -13,6 +13,8 @@ import { requestHandler } from "../../../util";
 import { toast } from "sonner";
 import { useAppDispatch } from "../../../hooks/UseAppDispatch";
 import { setProject } from "../../../redux/slices/project.slice";
+import { Menu, Transition } from "@headlessui/react";
+import { MdKeyboardDoubleArrowDown } from "react-icons/md";
 
 // Interface for form data
 interface FormData {
@@ -30,16 +32,15 @@ interface ModelProps {
 
 const Model: React.FC<ModelProps> = ({ data }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [users, setUsers] = useState<
-    { username: string; _id: string; firstName: string }[]
-  >([]);
-
-  const project = useAppSelector((state) => state.project.project);
+  const [users, setUsers] = useState<{ username: string; _id: string }[]>([]);
+  const { project } = useAppSelector((state) => state.project);
   const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
     reset,
   } = useForm<FormData>({
@@ -51,10 +52,13 @@ const Model: React.FC<ModelProps> = ({ data }) => {
     },
   });
 
+  // Watch the assignee field
+  const assignee = watch("assignee");
+
   // Function to handle form submission
   const onSubmit: SubmitHandler<FormData> = async (payload) => {
     requestHandler(
-      async () => await addTaskRequest(project?._id, payload),
+      async () => await addTaskRequest(project?._id || "", payload),
       setIsLoading,
       ({ data: project }) => {
         toast.success("Task added successfully!");
@@ -126,28 +130,44 @@ const Model: React.FC<ModelProps> = ({ data }) => {
                   )}
                 </div>
                 <div className="w-full">
-                  <select
-                    {...register("assignee")}
-                    className="w-full bg-transparent hover:dark:border-[#fff] border-2 border-neutral-700 rounded-md dark:text-white text-gray-700 px-6 py-3 text-base cursor-pointer transition"
-                    required
-                  >
-                    <option
-                      value=""
-                      className="dark:bg-black bg-white dark:text-white text-black"
+                  <Menu as="div" className="relative w-full">
+                    <Menu.Button as={Button} severity="secondary" type="button">
+                      {assignee
+                        ? users.find((user) => user._id === assignee)
+                            ?.username || "Select Assignee"
+                        : "Select Assignee"}
+                      <MdKeyboardDoubleArrowDown
+                        className="ml-2 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                    </Menu.Button>
+                    <Transition
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
                     >
-                      Assign User
-                    </option>
-                    {users.map((user) => (
-                      <option
-                        key={user._id}
-                        value={user._id}
-                        className="dark:bg-black bg-white dark:text-white text-black"
-                      >
-                        {user.firstName} {user.username}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="text-red-500">{errors.assignee?.message}</div>
+                      <Menu.Items className="absolute z-10 right-0 mt-2 w-full origin-top-right bg-neutral-200 dark:bg-neutral-700 divide-y divide-neutral-100 dark:divide-neutral-600 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        {users.map((user) => (
+                          <Menu.Item key={user._id}>
+                            {({ active }) => (
+                              <button
+                                className={`${
+                                  active && "bg-[#118a7e67]"
+                                } group flex items-center w-full px-4 py-2 text-sm text-neutral-700 dark:text-neutral-200`}
+                                type="button"
+                                onClick={() => setValue("assignee", user._id)}
+                              >
+                                {user.username}
+                              </button>
+                            )}
+                          </Menu.Item>
+                        ))}
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
                 </div>
 
                 <Button isLoading={isLoading}>Add Task</Button>

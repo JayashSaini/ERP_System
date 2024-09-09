@@ -11,6 +11,7 @@ import {
   UserProfile,
   ProjectList,
   ProjectDetails,
+  Inquiries,
 } from "../pages";
 import { PrivateRoute } from "../components";
 import DashboardLayout from "../layouts/Dashboard.layout";
@@ -32,6 +33,7 @@ const DashboardRoutes: React.FC = () => (
       <Route path="/human-resources" element={<HumanResource />} />
       <Route path="/setting" element={<Settings />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/inquiries" element={<Inquiries />} />
 
       {/* 404 page */}
       <Route

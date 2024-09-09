@@ -30,7 +30,7 @@ const Button = forwardRef<
             severity === "primary"
               ? "custom-bg text-white"
               : "bg-transparent dark:border-[#fff] border-[#262626]"
-          } border-[1px] duration-200 ease-in font-semibold flex items-center justify-center disabled:bg-[#353535] disabled:border-[#d6d6d64f] disabled:text-gray-500
+          } border-2 duration-200 ease-in font-semibold flex items-center justify-center disabled:bg-[#353535] disabled:border-[#d6d6d64f] disabled:text-gray-500
           ${size === "small" ? "sm:text-sm text-xs" : "sm:text-base text-sm"}
         `}
       >

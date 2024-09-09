@@ -100,3 +100,14 @@ export interface InputList {
   type: "text" | "number" | "date" | "email" | "password"; // Example of specific types
   apiName: string; // If there are specific API names, you can use string literals
 }
+
+export interface InquiryInterface {
+  name: string;
+  email: string;
+  message: string;
+  subject: string;
+  _id: string;
+  createdAt: string; // ISO 8601 date string
+  updatedAt: string; // ISO 8601 date string
+  __v: number; // Version key
+}

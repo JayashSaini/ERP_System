@@ -48,6 +48,11 @@ function DashboardLayout() {
       icon: <IconReportMoney className=" h-5 w-5 flex-shrink-0" />,
     },
     {
+      label: "Inquiries",
+      href: "/dashboard/inquiries",
+      icon: <IconReportMoney className=" h-5 w-5 flex-shrink-0" />,
+    },
+    {
       label: "Settings",
       href: "/dashboard/setting",
       icon: <IconSettings className=" h-5 w-5 flex-shrink-0" />,

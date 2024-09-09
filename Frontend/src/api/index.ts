@@ -187,6 +187,11 @@ const getProjectByIdRequest = (projectId: string) => {
   return apiClient.get(`/projects/` + projectId);
 };
 
+// inquiries routes
+const getAllInquiriesRequest = () => {
+  return apiClient.get(`/inquiries`);
+};
+
 // Export all the API functions
 export {
   loginUser,
@@ -218,4 +223,5 @@ export {
   setProjectStatusRequest,
   setTaskStatusRequest,
   updateAssigneeToTaskRequest,
+  getAllInquiriesRequest,
 };
